@@ -105,22 +105,47 @@
 
 ## Traceability
 
-Populated during roadmap creation.
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BREW-01 through BREW-11 | — | Pending |
-| RECIPE-01, RECIPE-02 | — | Pending |
-| CAT-01 through CAT-09 | — | Pending |
-| INV-01 through INV-04 | — | Pending |
-| RPT-01 through RPT-04 | — | Pending |
-| PLAT-01 through PLAT-03 | — | Pending |
+| PLAT-01 | Phase 1 | Pending |
+| PLAT-02 | Phase 1 | Pending |
+| CAT-01 | Phase 1 | Pending |
+| CAT-02 | Phase 1 | Pending |
+| CAT-03 | Phase 1 | Pending |
+| CAT-07 | Phase 1 | Pending |
+| CAT-08 | Phase 1 | Pending |
+| CAT-09 | Phase 1 | Pending |
+| CAT-04 | Phase 2 | Pending |
+| CAT-05 | Phase 2 | Pending |
+| CAT-06 | Phase 2 | Pending |
+| INV-01 | Phase 2 | Pending |
+| INV-02 | Phase 2 | Pending |
+| INV-03 | Phase 2 | Pending |
+| INV-04 | Phase 2 | Pending |
+| RECIPE-01 | Phase 3 | Pending |
+| RECIPE-02 | Phase 3 | Pending |
+| BREW-01 | Phase 4 | Pending |
+| BREW-02 | Phase 4 | Pending |
+| BREW-03 | Phase 4 | Pending |
+| BREW-04 | Phase 4 | Pending |
+| BREW-05 | Phase 4 | Pending |
+| BREW-06 | Phase 4 | Pending |
+| BREW-07 | Phase 4 | Pending |
+| BREW-08 | Phase 4 | Pending |
+| BREW-09 | Phase 4 | Pending |
+| PLAT-03 | Phase 4 | Pending |
+| BREW-10 | Phase 5 | Pending |
+| BREW-11 | Phase 5 | Pending |
+| RPT-01 | Phase 5 | Pending |
+| RPT-02 | Phase 6 | Pending |
+| RPT-03 | Phase 6 | Pending |
+| RPT-04 | Phase 6 | Pending |
 
 **Coverage:**
-- v1 requirements: 30 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 30 ⚠️
+- v1 requirements: 33 total
+- Mapped to phases: 33/33
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-28*
-*Last updated: 2026-04-28 after initial definition*
+*Last updated: 2026-04-28 after roadmap creation*

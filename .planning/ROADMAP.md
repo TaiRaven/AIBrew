@@ -1,0 +1,108 @@
+# Roadmap: AIBrew
+
+## Overview
+
+AIBrew is built in six phases that follow the data dependency order of the app's six scoped tables. Phase 1 lays the platform foundation and the first two reference catalogs (roasters and equipment) so every later phase has something to reference. Phase 2 adds beans and inventory, completing the catalog layer. Phase 3 adds recipe presets, which unlock the brew form's preset picker. Phase 4 delivers the core brew logging form — the app's primary value — along with the in-page timer, auto-fill, ratio display, and mobile optimisation. Phase 5 surfaces brew history and edit/delete actions. Phase 6 closes the loop with analytics views built on the aggregated data that only becomes meaningful after real brews exist.
+
+## Phases
+
+**Phase Numbering:**
+- Integer phases (1, 2, 3): Planned milestone work
+- Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
+
+Decimal phases appear between their surrounding integers in numeric order.
+
+- [ ] **Phase 1: App Foundation** - SDK init, scoped app, ACLs, navigator, roaster and equipment catalogs
+- [ ] **Phase 2: Bean Catalog & Inventory** - Bean type records, purchase ledger, computed stock, low-stock badge
+- [ ] **Phase 3: Recipe Presets** - Recipe table, preset list UI, save-from-brew action
+- [ ] **Phase 4: Brew Log Core** - BrewLog table, brew logging form with timer, presets, ratio, rating, mobile layout
+- [ ] **Phase 5: Brew History & Management** - Brew history list, edit and delete on past brews
+- [ ] **Phase 6: Analytics** - Scripted REST aggregations, rating trend, avg by bean, avg by method
+
+## Phase Details
+
+### Phase 1: App Foundation
+**Goal**: The scoped app exists on the instance, is reachable from the navigator, and the roaster and equipment catalogs are fully functional
+**Depends on**: Nothing (first phase)
+**Requirements**: PLAT-01, PLAT-02, CAT-01, CAT-02, CAT-03, CAT-07, CAT-08, CAT-09
+**Success Criteria** (what must be TRUE):
+  1. User can open AIBrew from the ServiceNow application navigator without error
+  2. User can create, view, edit, and archive a roaster record
+  3. User can create, view, edit, and archive an equipment record (grinder or brewer)
+  4. Archived roasters and equipment no longer appear in active picker lists
+  5. A non-admin user with the app role can read and write app data; a user without the role cannot
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 2: Bean Catalog & Inventory
+**Goal**: Users can manage their bean collection and see accurate, live remaining-stock figures derived from the purchase ledger
+**Depends on**: Phase 1
+**Requirements**: CAT-04, CAT-05, CAT-06, INV-01, INV-02, INV-03, INV-04
+**Success Criteria** (what must be TRUE):
+  1. User can create, view, edit, and archive a bean type record linked to a roaster
+  2. User can log a bean purchase (grams and date) against a bean type record
+  3. Remaining stock (g) on the bean detail page reflects current purchases minus brews logged for that bean
+  4. A low-stock badge appears on beans with less than 50 g remaining
+  5. User can view a chronological inventory history for a bean showing all purchases and brew depletions
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 3: Recipe Presets
+**Goal**: Users can save, browse, edit, and delete named recipe presets that pre-fill the brew log form
+**Depends on**: Phase 2
+**Requirements**: RECIPE-01, RECIPE-02
+**Success Criteria** (what must be TRUE):
+  1. After logging a brew, user can save the current form values as a named preset
+  2. User can view all saved presets in a dedicated management screen
+  3. User can edit a preset's name and values, and delete a preset, from that screen
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 4: Brew Log Core
+**Goal**: Users can log a complete brew in under 60 seconds from the counter using a mobile-optimised form with timer, preset picker, auto-fill, live ratio, and rating
+**Depends on**: Phase 3
+**Requirements**: BREW-01, BREW-02, BREW-03, BREW-04, BREW-05, BREW-06, BREW-07, BREW-08, BREW-09, PLAT-03
+**Success Criteria** (what must be TRUE):
+  1. User can open the brew log form, select a method and bean, enter dose and water weight, and submit — with no more than 6 fields visible by default on a phone-width screen
+  2. Brew ratio (water / dose) updates live on the form without requiring a submit
+  3. User can tap a saved preset to pre-fill the form, or have the form auto-fill from the most recent brew when no preset is selected
+  4. User can start, stop, and record brew time using the in-page stopwatch during the session
+  5. User can add a 1–10 rating and free-text taste notes before submitting
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 5: Brew History & Management
+**Goal**: Users can review all past brews in reverse-chronological order and correct or remove any entry
+**Depends on**: Phase 4
+**Requirements**: BREW-10, BREW-11, RPT-01
+**Success Criteria** (what must be TRUE):
+  1. User can view a reverse-chronological list of all logged brews
+  2. User can tap a brew in the history list and edit any of its fields
+  3. User can delete a brew from the history list, with the inventory stock figure updating to reflect the removal
+**Plans**: TBD
+**UI hint**: yes
+
+### Phase 6: Analytics
+**Goal**: Users can see rating trends and average performance by bean and method to understand what drives their best brews
+**Depends on**: Phase 5
+**Requirements**: RPT-02, RPT-03, RPT-04
+**Success Criteria** (what must be TRUE):
+  1. User can view a rating trend chart showing score by brew date
+  2. User can view average rating grouped by bean type, ranked highest to lowest
+  3. User can view average rating grouped by brew method, ranked highest to lowest
+**Plans**: TBD
+**UI hint**: yes
+
+## Progress
+
+**Execution Order:**
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 1. App Foundation | 0/TBD | Not started | - |
+| 2. Bean Catalog & Inventory | 0/TBD | Not started | - |
+| 3. Recipe Presets | 0/TBD | Not started | - |
+| 4. Brew Log Core | 0/TBD | Not started | - |
+| 5. Brew History & Management | 0/TBD | Not started | - |
+| 6. Analytics | 0/TBD | Not started | - |
