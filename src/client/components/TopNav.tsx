@@ -1,9 +1,7 @@
 import React from 'react'
-import { Tabs } from '@servicenow/react-components/Tabs'
+import { Button } from '@servicenow/react-components/Button'
 import { navigateToView } from '../utils/navigate'
 
-// All 5 tabs defined here. Phase 1 activates Home and Catalog.
-// Disabled tabs (Brew, History, Analytics) are rendered but block navigation.
 const TAB_ITEMS = [
   { id: 'home',      label: 'Home',      disabled: false },
   { id: 'brew',      label: 'Brew',      disabled: true  },
@@ -18,31 +16,50 @@ interface TopNavProps {
 }
 
 export default function TopNav({ currentTab, onTabChange }: TopNavProps) {
-  const handleSelectedItemSet = (e: CustomEvent) => {
-    const tabId = e.detail?.value
+  const handleTabClick = (tabId: string) => {
     const tab = TAB_ITEMS.find(t => t.id === tabId)
-    // Silently block disabled tabs — no navigation, no toast, no error (UI-SPEC §8.2)
     if (!tab || tab.disabled) return
-    onTabChange(tabId)
     navigateToView(tabId, {}, `AIBrew — ${tab.label}`)
+    onTabChange(tabId)
   }
 
   return (
-    <div
-      style={{
-        backgroundColor: 'var(--aibrew-paper-2)',
-        borderBottom: '1px solid rgba(29,26,23,0.15)',
-        height: '48px',
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
-      <Tabs
-        items={TAB_ITEMS}
-        selectedItem={currentTab}
-        onSelectedItemSet={handleSelectedItemSet}
-        style={{ width: '100%' }}
-      />
+    <div style={{
+      backgroundColor: 'var(--aibrew-paper-2)',
+      borderBottom: '1px solid rgba(29,26,23,0.15)',
+      height: '48px',
+      display: 'flex',
+      alignItems: 'center',
+      padding: '0 var(--sp-md)',
+      gap: 0,
+    }}>
+      {TAB_ITEMS.map(item => (
+        <Button
+          key={item.id}
+          onClicked={() => handleTabClick(item.id)}
+          disabled={item.disabled}
+          variant="tertiary"
+          style={{
+            background: 'none',
+            border: 'none',
+            borderBottom: item.id === currentTab ? '2px solid var(--aibrew-accent)' : '2px solid transparent',
+            borderRadius: 0,
+            padding: '0 var(--sp-md)',
+            height: '48px',
+            fontFamily: 'var(--aibrew-font-body)',
+            fontSize: '14px',
+            fontWeight: item.id === currentTab ? 600 : 400,
+            color: item.disabled
+              ? 'var(--aibrew-disabled-fg)'
+              : item.id === currentTab
+                ? 'var(--aibrew-ink)'
+                : 'var(--aibrew-ink-3)',
+            cursor: item.disabled ? 'default' : 'pointer',
+          }}
+        >
+          {item.label}
+        </Button>
+      ))}
     </div>
   )
 }
