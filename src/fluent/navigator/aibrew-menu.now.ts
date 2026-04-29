@@ -16,11 +16,11 @@ export const aibrew_home_module = Record({
   table: 'sys_app_module',
   data: {
     title: 'AIBrew',
-    application: aibrew_menu.$id,
+    application: aibrew_menu,
     link_type: 'DIRECT',
     query: 'x_664529_aibrew_home.do',
     hint: 'Open AIBrew',
-    roles: 'x_664529_aibrew.user',
+    roles: ['x_664529_aibrew.user'],
     active: true,
     order: 100,
   },
