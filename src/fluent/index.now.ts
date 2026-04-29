@@ -1,4 +1,7 @@
-// Fluent artifact registry — all SDK-managed server-side artifacts
 export { x_664529_aibrew_roaster } from './tables/roaster.now'
 export { x_664529_aibrew_equipment } from './tables/equipment.now'
 export { aibrew_user } from './roles/aibrew-user.now'
+export { roaster_read, roaster_write, roaster_create, roaster_delete } from './acls/roaster-acls.now'
+export { equipment_read, equipment_write, equipment_create, equipment_delete } from './acls/equipment-acls.now'
+export { aibrew_menu, aibrew_home_module } from './navigator/aibrew-menu.now'
+export { aibrew_home } from './ui-pages/aibrew-home.now'
