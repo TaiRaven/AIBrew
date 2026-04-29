@@ -18,6 +18,8 @@ export function navigateToView(
   // Always update URL and title directly (works both inside and outside Polaris)
   window.history.pushState({ viewName, ...params }, '', relativePath)
   document.title = title
+  // pushState does not fire popstate — dispatch synthetically so React re-renders
+  window.dispatchEvent(new PopStateEvent('popstate'))
 }
 
 export function getViewParams(): URLSearchParams {

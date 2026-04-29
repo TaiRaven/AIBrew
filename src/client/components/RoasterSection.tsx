@@ -76,7 +76,7 @@ function RoasterListView({ onNew }: { onNew: () => void }) {
     <div style={{ padding: 'var(--sp-md)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--sp-lg)' }}>
         <h2 style={{ fontFamily: 'var(--aibrew-font-disp)', fontSize: '28px', fontWeight: 600, color: 'var(--aibrew-ink)', margin: 0 }}>Roasters</h2>
-        <Button onClicked={onNew} variant="primary" style={{ minHeight: '44px' }}>New roaster</Button>
+        <Button onClicked={() => setShowCreate(true)} variant="primary" style={{ minHeight: '44px' }}>New roaster</Button>
       </div>
       {/* key= used for filtering — NowRecordListConnected has no query prop */}
       <NowRecordListConnected
