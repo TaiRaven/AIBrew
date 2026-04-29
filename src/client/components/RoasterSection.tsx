@@ -88,16 +88,19 @@ function RoasterListView({ onNew }: { onNew: () => void }) {
         limit={50}
       />
       <Modal
+        size="lg"
         opened={showCreate}
         onOpenedSet={(e: CustomEvent) => { if (!e.detail?.value) setShowCreate(false) }}
       >
-        <h2 style={modalHeadingStyle}>New Roaster</h2>
-        <RecordProvider table={ROASTER_TABLE} sysId="-1" isReadOnly={false}>
-          <div style={{ display: 'flex', gap: 'var(--sp-sm)', margin: 'var(--sp-md) 0' }}>
-            <Button onClicked={() => setShowCreate(false)} variant="secondary">Cancel</Button>
-          </div>
-          <FormColumnLayout />
-        </RecordProvider>
+        <div style={{ minWidth: '320px', width: '100%' }}>
+          <h2 style={modalHeadingStyle}>New Roaster</h2>
+          <RecordProvider table={ROASTER_TABLE} sysId="-1" isReadOnly={false}>
+            <div style={{ display: 'flex', gap: 'var(--sp-sm)', margin: 'var(--sp-md) 0' }}>
+              <Button onClicked={() => setShowCreate(false)} variant="secondary">Cancel</Button>
+            </div>
+            <FormColumnLayout />
+          </RecordProvider>
+        </div>
       </Modal>
     </div>
   )

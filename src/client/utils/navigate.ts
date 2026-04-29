@@ -18,8 +18,9 @@ export function navigateToView(
   // Always update URL and title directly (works both inside and outside Polaris)
   window.history.pushState({ viewName, ...params }, '', relativePath)
   document.title = title
-  // pushState does not fire popstate — dispatch synthetically so React re-renders
-  window.dispatchEvent(new PopStateEvent('popstate'))
+  // pushState does not fire popstate — dispatch a custom event so App re-renders
+  // without triggering ServiceNow components that listen to native popstate
+  window.dispatchEvent(new CustomEvent('aibrew:navigate'))
 }
 
 export function getViewParams(): URLSearchParams {

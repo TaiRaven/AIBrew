@@ -44,7 +44,11 @@ export default function App() {
 
   useEffect(() => {
     window.addEventListener('popstate', handlePopState)
-    return () => window.removeEventListener('popstate', handlePopState)
+    window.addEventListener('aibrew:navigate', handlePopState)
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+      window.removeEventListener('aibrew:navigate', handlePopState)
+    }
   }, [handlePopState])
 
   const handleTabChange = (_tabId: string) => {
