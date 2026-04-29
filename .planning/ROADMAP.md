@@ -33,11 +33,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   5. A non-admin user with the app role can read and write app data; a user without the role cannot
 **Plans**: 6 plans
 Plans:
-- [ ] 01-PLAN-01.md — SDK init: capture real scope prefix, scaffold project, install dependencies
-- [ ] 01-PLAN-02.md — Fluent artifacts: Roaster + Equipment tables, role, ACLs, navigator module, UiPage
-- [ ] 01-PLAN-03.md — React client foundation: index.html (polyfill D-06), utils, AppShell, TopNav
-- [ ] 01-PLAN-04.md — HomeView tile grid and full Roaster catalog section (list, create, edit, archive)
-- [ ] 01-PLAN-05.md — Equipment catalog section (list, create, edit, archive with type chip)
+- [x] 01-PLAN-01.md — SDK init: capture real scope prefix, scaffold project, install dependencies
+- [x] 01-PLAN-02.md — Fluent artifacts: Roaster + Equipment tables, role, ACLs, navigator module, UiPage
+- [x] 01-PLAN-03.md — React client foundation: index.html (polyfill D-06), utils, AppShell, TopNav
+- [x] 01-PLAN-04.md — HomeView tile grid and full Roaster catalog section (list, create, edit, archive)
+- [x] 01-PLAN-05.md — Equipment catalog section (list, create, edit, archive with type chip)
 - [ ] 01-PLAN-06.md — Deploy to instance and verify all Phase 1 criteria with non-admin test user
 **UI hint**: yes
 
@@ -107,7 +107,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. App Foundation | 0/6 | Ready to execute | - |
+| 1. App Foundation | 5/6 | Executing | - |
 | 2. Bean Catalog & Inventory | 0/TBD | Not started | - |
 | 3. Recipe Presets | 0/TBD | Not started | - |
 | 4. Brew Log Core | 0/TBD | Not started | - |
