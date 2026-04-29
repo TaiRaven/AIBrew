@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import TopNav from './components/TopNav'
+import HomeView from './components/HomeView'
+import CatalogView from './components/CatalogView'
 import { getViewParams, navigateToView } from './utils/navigate'
-
-// HomeView and CatalogView will be imported here once 01-PLAN-04 and 01-PLAN-05 complete.
 
 function getActiveTab(params: URLSearchParams): string {
   const view = params.get('view')
@@ -56,11 +56,9 @@ export default function App() {
   function renderContent() {
     switch (view) {
       case 'home':
-        // HomeView — created in 01-PLAN-04
-        return <div style={{ padding: 'var(--sp-xl)', fontFamily: 'var(--aibrew-font-disp)', fontSize: '28px', fontWeight: 600, color: 'var(--aibrew-ink)' }}>AIBrew — Home (placeholder)</div>
+        return <HomeView />
       case 'catalog':
-        // CatalogView — created in 01-PLAN-04
-        return <div style={{ padding: 'var(--sp-xl)', fontFamily: 'var(--aibrew-font-body)', color: 'var(--aibrew-ink)' }}>Catalog (placeholder)</div>
+        return <CatalogView params={params} />
       case 'brew':
       case 'history':
       case 'analytics':
