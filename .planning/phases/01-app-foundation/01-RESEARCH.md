@@ -989,17 +989,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(<App />)
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Real scope prefix**
-   - What we know: Instance is `dev203275.service-now.com`, authenticated via OAuth.
-   - What's unclear: Exact value of `glide.appcreator.company.code` — needed to form the `--scopeName` argument for `sdk init`.
-   - Recommendation: Task 1 of Phase 1 must query this property and capture the result before any further code is written.
+1. **Real scope prefix** — RESOLVED in 01-PLAN-01 T01: prefix is retrieved at execution time via `glide.appcreator.company.code` property query before `sdk init` runs. No hardcoded placeholder accepted.
 
-2. **Tabs component prop API**
-   - What we know: `@servicenow/react-components` includes a `Tabs` component.
-   - What's unclear: Exact prop names (`items` shape, selected tab prop, event handler name) — these differ from standard React patterns.
-   - Recommendation: Before implementing `TopNav.tsx`, run `npx @servicenow/sdk explain` against the react-components package docs for `Tabs`.
+2. **Tabs component prop API** — RESOLVED in 01-PLAN-03 T02: executor must run `npx @servicenow/sdk explain` on the Tabs/react-components API before writing TopNav.tsx. Exact prop names determined at implementation time from live SDK docs.
 
 ---
 
