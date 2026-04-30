@@ -627,7 +627,7 @@ export { BeanStockHelper } from './script-includes/bean-stock-helper.now'
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Script Include callable from module handler**
    - What we know: The SDK `module-guide` documents that modules can call Script Includes. The script-include-guide says use `require()` for the bridge pattern. Neither doc shows direct instantiation from a module.
