@@ -51,7 +51,13 @@ Plans:
   3. Remaining stock (g) on the bean detail page reflects current purchases minus brews logged for that bean
   4. A low-stock badge appears on beans with less than 50 g remaining
   5. User can view a chronological inventory history for a bean showing all purchases and brew depletions
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 02-01-PLAN.md — Fluent table definitions: bean + bean_purchase tables, 8 ACLs, index.now.ts exports
+- [ ] 02-02-PLAN.md — Scripted REST API + Script Include: stock endpoint, GlideAggregate handler
+- [ ] 02-03-PLAN.md — BeanSection.tsx list view: pantry/empty tabs, card grid, stock bars, create modal
+- [ ] 02-04-PLAN.md — BeanSection.tsx detail view: RecordProvider form, stock bar, Add Beans form, purchase history
+- [ ] 02-05-PLAN.md — CatalogView wiring, deploy, and human UAT
 **UI hint**: yes
 
 ### Phase 3: Recipe Presets
@@ -107,8 +113,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. App Foundation | 5/6 | Executing | - |
-| 2. Bean Catalog & Inventory | 0/TBD | Not started | - |
+| 1. App Foundation | 6/6 | Complete | 2026-04-30 |
+| 2. Bean Catalog & Inventory | 0/5 | Not started | - |
 | 3. Recipe Presets | 0/TBD | Not started | - |
 | 4. Brew Log Core | 0/TBD | Not started | - |
 | 5. Brew History & Management | 0/TBD | Not started | - |
