@@ -5,10 +5,6 @@ declare global {
         namespace Internal {
             interface Keys extends KeysRegistry {
                 explicit: {
-                    aibrew_home: {
-                        table: 'sys_ui_page'
-                        id: '437e9bae7316435cb7de2a11eddd20d3'
-                    }
                     aibrew_home_module: {
                         table: 'sys_app_module'
                         id: '90a09a7aa79b4d2c832e80e0cd8eb4f3'
@@ -16,6 +12,22 @@ declare global {
                     aibrew_menu: {
                         table: 'sys_app_application'
                         id: 'b20c83341ef84c09af92bad6b70da64d'
+                    }
+                    bean_stock_api: {
+                        table: 'sys_ws_definition'
+                        id: 'ac554a26c0cd4850b93b90980d60b520'
+                    }
+                    bean_stock_api_v1: {
+                        table: 'sys_ws_version'
+                        id: '3d0c24045985470f978711177d02fcd2'
+                    }
+                    bean_stock_get: {
+                        table: 'sys_ws_operation'
+                        id: 'bcf5c316f43a40de93749d7db7b1104a'
+                    }
+                    BeanStockHelper: {
+                        table: 'sys_script_include'
+                        id: '1da4444f8b304ea099f060367b885863'
                     }
                     bom_json: {
                         table: 'sys_module'
@@ -56,6 +68,14 @@ declare global {
                     roaster_write: {
                         table: 'sys_security_acl'
                         id: '0a6448c56c4c4a9a9f05f53bae9695ee'
+                    }
+                    'src_server_bean-stock-handler_ts': {
+                        table: 'sys_module'
+                        id: '7e3606e21a624a9c8a73958f7ebbdbfe'
+                    }
+                    'src_server_script-includes_BeanStockHelper_server_js': {
+                        table: 'sys_module'
+                        id: 'c320277f29e143a78ccd942d7766654e'
                     }
                 }
                 composite: [

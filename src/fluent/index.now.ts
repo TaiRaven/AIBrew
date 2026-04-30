@@ -5,3 +5,5 @@ export { roaster_read, roaster_write, roaster_create, roaster_delete } from './a
 export { equipment_read, equipment_write, equipment_create, equipment_delete } from './acls/equipment-acls.now'
 export { aibrew_menu, aibrew_home_module } from './navigator/aibrew-menu.now'
 export { aibrew_home } from './ui-pages/aibrew-home.now'
+export { bean_stock_api } from './scripted-rest/bean-stock-api.now'
+export { BeanStockHelper } from './script-includes/bean-stock-helper.now'
