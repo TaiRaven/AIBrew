@@ -7,6 +7,7 @@ import { FormActionBar } from '@servicenow/react-components/FormActionBar'
 import { navigateToView, getViewParams } from '../utils/navigate'
 
 const ROASTER_TABLE = 'x_664529_aibrew_roaster'
+const SYS_ID_RE = /^[0-9a-f]{32}$/i
 
 const modalHeadingStyle = { fontFamily: 'var(--aibrew-font-disp)', fontSize: '20px', fontWeight: 600, color: 'var(--aibrew-ink)', margin: '0 0 var(--sp-md) 0' }
 const bodyStyle = { fontFamily: 'var(--aibrew-font-body)', fontSize: '16px', color: 'var(--aibrew-ink)', padding: 'var(--sp-sm) 0' }
@@ -21,13 +22,22 @@ function RoasterDetailView({ sysId }: { sysId: string }) {
 
   const handleArchive = async () => {
     setArchiveError('')
+    if (!SYS_ID_RE.test(sysId)) {
+      setArchiveError('Invalid record identifier.')
+      return
+    }
+    const g_ck = (window as any).g_ck
+    if (!g_ck) {
+      setArchiveError('Session token not available — please reload the page.')
+      return
+    }
     try {
       const res = await fetch(`/api/now/table/${ROASTER_TABLE}/${sysId}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'X-UserToken': (window as any).g_ck || '' },
-        body: JSON.stringify({ active: 'false' }),
+        headers: { 'Content-Type': 'application/json', 'X-UserToken': g_ck },
+        body: JSON.stringify({ active: false }),
       })
-      if (!res.ok) throw new Error()
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
       setShowArchive(false)
       handleBack()
     } catch {
@@ -70,21 +80,24 @@ function RoasterListView() {
   const [records, setRecords] = useState<RoasterRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [listKey, setListKey] = useState(0)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     let cancelled = false
     setLoading(true)
+    setError(null)
+    const g_ck = (window as any).g_ck
     const params = new URLSearchParams({
       sysparm_query: 'active=true',
       sysparm_fields: 'sys_id,name,website,notes',
       sysparm_limit: '50',
     })
     fetch(`/api/now/table/${ROASTER_TABLE}?${params}`, {
-      headers: { Accept: 'application/json', 'X-UserToken': (window as any).g_ck || '' },
+      headers: { Accept: 'application/json', ...(g_ck ? { 'X-UserToken': g_ck } : {}) },
     })
       .then(r => r.json())
       .then(data => { if (!cancelled) setRecords(data.result || []) })
-      .catch(() => { if (!cancelled) setRecords([]) })
+      .catch(() => { if (!cancelled) { setRecords([]); setError('Could not load records — tap to retry.') } })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
   }, [listKey])
@@ -104,9 +117,10 @@ function RoasterListView() {
         <h2 style={{ fontFamily: 'var(--aibrew-font-disp)', fontSize: '28px', fontWeight: 600, color: 'var(--aibrew-ink)', margin: 0 }}>Roasters</h2>
         <Button onClicked={() => setShowCreate(true)} variant="primary" style={{ minHeight: '44px' }}>New roaster</Button>
       </div>
+      {error && <div style={{ color: 'var(--aibrew-destructive)', fontFamily: 'var(--aibrew-font-body)', fontSize: '16px', marginBottom: 'var(--sp-sm)' }}>{error}</div>}
       {loading ? (
         <div style={{ textAlign: 'center', padding: 'var(--sp-xl)', color: 'var(--aibrew-ink-3)', fontFamily: 'var(--aibrew-font-body)' }}>Loading…</div>
-      ) : records.length === 0 ? (
+      ) : !error && records.length === 0 ? (
         <div style={{ textAlign: 'center', padding: 'var(--sp-xl)', color: 'var(--aibrew-ink-3)', fontFamily: 'var(--aibrew-font-body)' }}>No roasters yet. Add your first roaster above.</div>
       ) : (
         <div style={{ borderTop: '1px solid var(--aibrew-ink-5)' }}>
