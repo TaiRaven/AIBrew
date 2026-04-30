@@ -4,6 +4,7 @@ import { Modal } from '@servicenow/react-components/Modal'
 import { NowRecordListConnected } from '@servicenow/react-components/NowRecordListConnected'
 import { RecordProvider } from '@servicenow/react-components/RecordContext'
 import { FormColumnLayout } from '@servicenow/react-components/FormColumnLayout'
+import { FormActionBar } from '@servicenow/react-components/FormActionBar'
 import { navigateToView, getViewParams } from '../utils/navigate'
 
 const ROASTER_TABLE = 'x_664529_aibrew_roaster'
@@ -51,7 +52,7 @@ function RoasterDetailView({ sysId }: { sysId: string }) {
           { label: 'Keep it', variant: 'secondary' },
         ]}
         onFooterActionClicked={(e: CustomEvent) => {
-          if (e.detail?.action?.label === 'Archive') handleArchive()
+          if (e.detail?.payload?.action?.label === 'Archive') handleArchive()
           else setShowArchive(false)
         }}
         onOpenedSet={(e: CustomEvent) => { if (!e.detail?.value) setShowArchive(false) }}
@@ -94,12 +95,20 @@ function RoasterListView({ onNew }: { onNew: () => void }) {
       >
         <div style={{ minWidth: '320px', width: '100%' }}>
           <h2 style={modalHeadingStyle}>New Roaster</h2>
-          <RecordProvider table={ROASTER_TABLE} sysId="-1" isReadOnly={false}>
-            <div style={{ display: 'flex', gap: 'var(--sp-sm)', margin: 'var(--sp-md) 0' }}>
-              <Button onClicked={() => setShowCreate(false)} variant="secondary">Cancel</Button>
+          <RecordProvider
+            table={ROASTER_TABLE}
+            sysId="-1"
+            isReadOnly={false}
+            onFormSubmitCompleted={() => setShowCreate(false)}
+          >
+            <div style={{ width: '100%' }}>
+              <FormActionBar />
             </div>
             <FormColumnLayout />
           </RecordProvider>
+          <div style={{ marginTop: 'var(--sp-sm)' }}>
+            <Button onClicked={() => setShowCreate(false)} variant="secondary">Cancel</Button>
+          </div>
         </div>
       </Modal>
     </div>
