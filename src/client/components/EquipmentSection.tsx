@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '@servicenow/react-components/Button'
 import { Modal } from '@servicenow/react-components/Modal'
-import { NowRecordListConnected } from '@servicenow/react-components/NowRecordListConnected'
 import { RecordProvider } from '@servicenow/react-components/RecordContext'
 import { FormColumnLayout } from '@servicenow/react-components/FormColumnLayout'
 import { FormActionBar } from '@servicenow/react-components/FormActionBar'
@@ -12,18 +11,7 @@ const EQUIPMENT_TABLE = 'x_664529_aibrew_equipment'
 const modalHeadingStyle = { fontFamily: 'var(--aibrew-font-disp)', fontSize: '20px', fontWeight: 600, color: 'var(--aibrew-ink)', margin: '0 0 var(--sp-md) 0' }
 const bodyStyle = { fontFamily: 'var(--aibrew-font-body)', fontSize: '16px', color: 'var(--aibrew-ink)', padding: 'var(--sp-sm) 0' }
 
-function EquipmentEmptyState({ onNew }: { onNew: () => void }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 'var(--sp-2xl) var(--sp-md)', textAlign: 'center', gap: 'var(--sp-md)' }}>
-      <div style={{ fontSize: '48px', color: 'var(--aibrew-ink-4)' }}>⚙️</div>
-      <div style={{ fontFamily: 'var(--aibrew-font-disp)', fontSize: '28px', fontWeight: 600, color: 'var(--aibrew-ink-3)' }}>No equipment yet</div>
-      <div style={{ fontFamily: 'var(--aibrew-font-body)', fontSize: '16px', color: 'var(--aibrew-ink-4)', maxWidth: '320px' }}>
-        Add your grinders and brewers so you can track grind size per device.
-      </div>
-      <Button onClicked={onNew} variant="primary" style={{ minHeight: '44px' }}>Add your first piece of equipment</Button>
-    </div>
-  )
-}
+interface EquipmentRecord { sys_id: string; name: string; type: string; notes: string }
 
 function EquipmentDetailView({ sysId }: { sysId: string }) {
   const [showArchive, setShowArchive] = useState(false)
@@ -77,13 +65,37 @@ function EquipmentDetailView({ sysId }: { sysId: string }) {
   )
 }
 
-function EquipmentListView({ onNew }: { onNew: () => void }) {
+function EquipmentListView() {
   const [showCreate, setShowCreate] = useState(false)
+  const [records, setRecords] = useState<EquipmentRecord[]>([])
+  const [loading, setLoading] = useState(true)
+  const [listKey, setListKey] = useState(0)
 
-  const handleRowClick = (e: CustomEvent) => {
-    const sysId = e.detail?.payload?.sys_id || e.detail?.sys_id
-    if (!sysId) return
+  useEffect(() => {
+    let cancelled = false
+    setLoading(true)
+    const params = new URLSearchParams({
+      sysparm_query: 'active=true',
+      sysparm_fields: 'sys_id,name,type,notes',
+      sysparm_limit: '50',
+    })
+    fetch(`/api/now/table/${EQUIPMENT_TABLE}?${params}`, {
+      headers: { Accept: 'application/json', 'X-UserToken': (window as any).g_ck || '' },
+    })
+      .then(r => r.json())
+      .then(data => { if (!cancelled) setRecords(data.result || []) })
+      .catch(() => { if (!cancelled) setRecords([]) })
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
+  }, [listKey])
+
+  const handleRowClick = (sysId: string) => {
     navigateToView('catalog', { section: 'equipment', id: sysId }, 'AIBrew — Equipment')
+  }
+
+  const handleSaved = () => {
+    setShowCreate(false)
+    setListKey(k => k + 1)
   }
 
   return (
@@ -92,15 +104,28 @@ function EquipmentListView({ onNew }: { onNew: () => void }) {
         <h2 style={{ fontFamily: 'var(--aibrew-font-disp)', fontSize: '28px', fontWeight: 600, color: 'var(--aibrew-ink)', margin: 0 }}>Equipment</h2>
         <Button onClicked={() => setShowCreate(true)} variant="primary" style={{ minHeight: '44px' }}>New equipment</Button>
       </div>
-      {/* key= used for filtering — NowRecordListConnected has no query prop */}
-      <NowRecordListConnected
-        key="active=true"
-        table={EQUIPMENT_TABLE}
-        listTitle="Equipment"
-        columns="name,type,notes"
-        onRowClicked={handleRowClick}
-        limit={50}
-      />
+      {loading ? (
+        <div style={{ textAlign: 'center', padding: 'var(--sp-xl)', color: 'var(--aibrew-ink-3)', fontFamily: 'var(--aibrew-font-body)' }}>Loading…</div>
+      ) : records.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: 'var(--sp-xl)', color: 'var(--aibrew-ink-3)', fontFamily: 'var(--aibrew-font-body)' }}>No equipment yet. Add your first piece of equipment above.</div>
+      ) : (
+        <div style={{ borderTop: '1px solid var(--aibrew-ink-5)' }}>
+          {records.map(r => (
+            <Button
+              key={r.sys_id}
+              onClicked={() => handleRowClick(r.sys_id)}
+              variant="tertiary"
+              style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 'var(--sp-md)', borderBottom: '1px solid var(--aibrew-ink-5)', borderRadius: 0, minHeight: '56px', background: 'none', border: 'none', textAlign: 'left' }}
+            >
+              <div>
+                <div style={{ fontWeight: 600, color: 'var(--aibrew-ink)', fontFamily: 'var(--aibrew-font-body)', fontSize: '16px' }}>{r.name}</div>
+                {r.type && <div style={{ fontSize: '14px', color: 'var(--aibrew-ink-3)', fontFamily: 'var(--aibrew-font-body)' }}>{r.type}</div>}
+              </div>
+              <span style={{ color: 'var(--aibrew-ink-4)', fontSize: '18px' }}>›</span>
+            </Button>
+          ))}
+        </div>
+      )}
       <Modal
         size="lg"
         opened={showCreate}
@@ -112,7 +137,7 @@ function EquipmentListView({ onNew }: { onNew: () => void }) {
             table={EQUIPMENT_TABLE}
             sysId="-1"
             isReadOnly={false}
-            onFormSubmitCompleted={() => setShowCreate(false)}
+            onFormSubmitCompleted={handleSaved}
           >
             <div style={{ width: '100%' }}>
               <FormActionBar />
@@ -131,8 +156,7 @@ function EquipmentListView({ onNew }: { onNew: () => void }) {
 export default function EquipmentSection() {
   const params = getViewParams()
   const sysId = params.get('id')
-  const [showCreate, setShowCreate] = useState(false)
 
   if (sysId) return <EquipmentDetailView sysId={sysId} />
-  return <EquipmentListView onNew={() => setShowCreate(true)} />
+  return <EquipmentListView />
 }
