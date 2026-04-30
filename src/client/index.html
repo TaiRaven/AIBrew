@@ -62,7 +62,7 @@
         function specArrayFrom(arrayLike, mapFn, thisArg) {
           if (arrayLike == null) throw new TypeError('Array.from requires an array-like or iterable object');
           var C = this;
-          if (typeof C !== 'function' || C === Window || C === Object) { C = Array; }
+          if (typeof C !== 'function' || C === Object) { C = Array; }
           var mapping = typeof mapFn === 'function';
           var iterFn = arrayLike[Symbol.iterator];
           if (typeof iterFn === 'function') {
