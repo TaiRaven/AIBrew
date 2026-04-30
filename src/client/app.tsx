@@ -51,10 +51,6 @@ export default function App() {
     }
   }, [handlePopState])
 
-  const handleTabChange = (_tabId: string) => {
-    setParams(getViewParams())
-  }
-
   const view = params.get('view') || 'home'
   const knownViews = ['home', 'catalog', 'brew', 'history', 'analytics']
   const isUnknownView = !knownViews.includes(view)
@@ -80,7 +76,7 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--aibrew-paper)' }}>
-      <TopNav currentTab={activeTab} onTabChange={handleTabChange} />
+      <TopNav currentTab={activeTab} />
       <main style={{ padding: 0 }}>
         {renderContent()}
       </main>

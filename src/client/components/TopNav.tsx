@@ -12,15 +12,14 @@ const TAB_ITEMS = [
 
 interface TopNavProps {
   currentTab: string
-  onTabChange: (tabId: string) => void
 }
 
-export default function TopNav({ currentTab, onTabChange }: TopNavProps) {
+export default function TopNav({ currentTab }: TopNavProps) {
   const handleTabClick = (tabId: string) => {
     const tab = TAB_ITEMS.find(t => t.id === tabId)
     if (!tab || tab.disabled) return
     navigateToView(tabId, {}, `AIBrew — ${tab.label}`)
-    onTabChange(tabId)
+    // App re-renders via the aibrew:navigate event listener — no callback needed
   }
 
   return (
