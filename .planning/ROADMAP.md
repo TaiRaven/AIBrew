@@ -12,7 +12,7 @@ AIBrew is built in six phases that follow the data dependency order of the app's
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: App Foundation** - SDK init, scoped app, ACLs, navigator, roaster and equipment catalogs
+- [x] **Phase 1: App Foundation** - SDK init, scoped app, ACLs, navigator, roaster and equipment catalogs (Complete 2026-04-30)
 - [ ] **Phase 2: Bean Catalog & Inventory** - Bean type records, purchase ledger, computed stock, low-stock badge
 - [ ] **Phase 3: Recipe Presets** - Recipe table, preset list UI, save-from-brew action
 - [ ] **Phase 4: Brew Log Core** - BrewLog table, brew logging form with timer, presets, ratio, rating, mobile layout
@@ -38,7 +38,7 @@ Plans:
 - [x] 01-PLAN-03.md — React client foundation: index.html (polyfill D-06), utils, AppShell, TopNav
 - [x] 01-PLAN-04.md — HomeView tile grid and full Roaster catalog section (list, create, edit, archive)
 - [x] 01-PLAN-05.md — Equipment catalog section (list, create, edit, archive with type chip)
-- [ ] 01-PLAN-06.md — Deploy to instance and verify all Phase 1 criteria with non-admin test user
+- [x] 01-PLAN-06.md — Deploy to instance and verify all Phase 1 criteria with non-admin test user
 **UI hint**: yes
 
 ### Phase 2: Bean Catalog & Inventory
