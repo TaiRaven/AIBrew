@@ -4,7 +4,7 @@ import { Modal } from '@servicenow/react-components/Modal'
 import { RecordProvider } from '@servicenow/react-components/RecordContext'
 import { FormColumnLayout } from '@servicenow/react-components/FormColumnLayout'
 import { FormActionBar } from '@servicenow/react-components/FormActionBar'
-import { navigateToView, getViewParams } from '../utils/navigate'
+import { navigateToView } from '../utils/navigate'
 
 const ROASTER_TABLE = 'x_664529_aibrew_roaster'
 const SYS_ID_RE = /^[0-9a-f]{32}$/i
@@ -167,8 +167,7 @@ function RoasterListView() {
   )
 }
 
-export default function RoasterSection() {
-  const params = getViewParams()
+export default function RoasterSection({ params }: { params: URLSearchParams }) {
   const sysId = params.get('id')
 
   if (sysId) return <RoasterDetailView sysId={sysId} />

@@ -33,9 +33,9 @@ export default function CatalogView({ params }: CatalogViewProps) {
   function renderSection() {
     switch (section) {
       case 'roasters':
-        return <RoasterSection />
+        return <RoasterSection params={params} />
       case 'equipment':
-        return <EquipmentSection />
+        return <EquipmentSection params={params} />
       default:
         return null
     }
