@@ -22,7 +22,7 @@ export default function CatalogView({ params }: CatalogViewProps) {
     if (!params.get('section')) {
       navigateToView('catalog', { section: 'roasters' }, 'AIBrew — Catalog')
     }
-  }, [])
+  }, [params])
 
   const handleSection = (id: string) => {
     const item = SUB_NAV.find(i => i.id === id)
