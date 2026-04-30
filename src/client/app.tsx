@@ -56,6 +56,12 @@ export default function App() {
   }
 
   const view = params.get('view') || 'home'
+  const knownViews = ['home', 'catalog', 'brew', 'history', 'analytics']
+  const isUnknownView = !knownViews.includes(view)
+
+  useEffect(() => {
+    if (isUnknownView) navigateToView('home', {}, 'AIBrew')
+  }, [isUnknownView])
 
   function renderContent() {
     switch (view) {
@@ -68,7 +74,6 @@ export default function App() {
       case 'analytics':
         return <DisabledView view={view} />
       default:
-        navigateToView('home', {}, 'AIBrew')
         return null
     }
   }
