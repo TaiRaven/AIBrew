@@ -224,7 +224,7 @@ function BeanDetailView({ sysId }: { sysId: string }) {
                 style={{
                   width: `${totalPurchasedG > 0 ? Math.min(100, (remainingG / totalPurchasedG) * 100) : 0}%`,
                   height: '100%',
-                  background: isLowStock ? 'var(--aibrew-destructive)' : 'var(--aibrew-accent)',
+                  background: isLowStock ? '#b91c1c' : '#16a34a',
                   borderRadius: '4px',
                   transition: 'width 0.3s ease',
                 }}
@@ -433,7 +433,7 @@ function StockBar({ remaining_g, total_purchased_g, loading }: StockInfo & { loa
 
   const pct = total_purchased_g > 0 ? Math.min(100, (remaining_g / total_purchased_g) * 100) : 0
   const isLowStock = remaining_g < LOW_STOCK_THRESHOLD && remaining_g > 0
-  const barColor = isLowStock ? 'var(--aibrew-destructive)' : 'var(--aibrew-accent)'
+  const barColor = isLowStock ? '#b91c1c' : '#16a34a'
 
   return (
     <div>
@@ -501,9 +501,11 @@ function BeanCard({
   stockLoading: boolean
   onClick: () => void
 }) {
-  const name = bean.name?.display_value ?? bean.name?.value ?? ''
-  const origin = bean.origin?.display_value ?? bean.origin?.value ?? ''
-  const roasterName = bean['roaster.display_value']?.display_value ?? bean['roaster.display_value']?.value ?? ''
+  const name = bean.name?.display_value ?? bean.name?.value ?? bean.name ?? ''
+  const origin = bean.origin?.display_value ?? bean.origin?.value ?? bean.origin ?? ''
+  const roasterName = typeof bean['roaster.display_value'] === 'string'
+    ? bean['roaster.display_value']
+    : (bean['roaster.display_value']?.display_value ?? bean['roaster.display_value']?.value ?? '')
 
   const remaining_g = stock?.remaining_g ?? 0
   const total_purchased_g = stock?.total_purchased_g ?? 0
