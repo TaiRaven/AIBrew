@@ -65,7 +65,7 @@ function BeanDetailView({ sysId }: { sysId: string }) {
       headers: { Accept: 'application/json', ...(g_ck ? { 'X-UserToken': g_ck } : {}) },
     })
       .then(r => r.json())
-      .then(data => { if (!cancelled) setStock(data) })
+      .then(data => { if (!cancelled) setStock(data.result ?? data) })
       .catch(() => { if (!cancelled) setStock(null) })
       .finally(() => { if (!cancelled) setStockLoading(false) })
     return () => { cancelled = true }
@@ -620,6 +620,7 @@ function BeanListView() {
               headers: { Accept: 'application/json', ...(g_ck ? { 'X-UserToken': g_ck } : {}) },
             })
               .then(r => (r.ok ? r.json() : { remaining_g: 0, total_purchased_g: 0 }))
+              .then(data => data.result ?? data)
               .catch(() => ({ remaining_g: 0, total_purchased_g: 0 }))
           })
         )
