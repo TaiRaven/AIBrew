@@ -13,7 +13,7 @@ AIBrew is built in six phases that follow the data dependency order of the app's
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: App Foundation** - SDK init, scoped app, ACLs, navigator, roaster and equipment catalogs (Complete 2026-04-30)
-- [ ] **Phase 2: Bean Catalog & Inventory** - Bean type records, purchase ledger, computed stock, low-stock badge
+- [x] **Phase 2: Bean Catalog & Inventory** - Bean type records, purchase ledger, computed stock, low-stock badge (Complete 2026-05-01)
 - [ ] **Phase 3: Recipe Presets** - Recipe table, preset list UI, save-from-brew action
 - [ ] **Phase 4: Brew Log Core** - BrewLog table, brew logging form with timer, presets, ratio, rating, mobile layout
 - [ ] **Phase 5: Brew History & Management** - Brew history list, edit and delete on past brews
@@ -53,11 +53,11 @@ Plans:
   5. User can view a chronological inventory history for a bean showing all purchases and brew depletions
 **Plans**: 5 plans
 Plans:
-- [ ] 02-01-PLAN.md — Fluent table definitions: bean + bean_purchase tables, 8 ACLs, index.now.ts exports
-- [ ] 02-02-PLAN.md — Scripted REST API + Script Include: stock endpoint, GlideAggregate handler
-- [ ] 02-03-PLAN.md — BeanSection.tsx list view: pantry/empty tabs, card grid, stock bars, create modal
-- [ ] 02-04-PLAN.md — BeanSection.tsx detail view: RecordProvider form, stock bar, Add Beans form, purchase history
-- [ ] 02-05-PLAN.md — CatalogView wiring, deploy, and human UAT
+- [x] 02-01-PLAN.md — Fluent table definitions: bean + bean_purchase tables, 8 ACLs, index.now.ts exports
+- [x] 02-02-PLAN.md — Scripted REST API + Script Include: stock endpoint, GlideAggregate handler
+- [x] 02-03-PLAN.md — BeanSection.tsx list view: pantry/empty tabs, card grid, stock bars, create modal
+- [x] 02-04-PLAN.md — BeanSection.tsx detail view: RecordProvider form, stock bar, Add Beans form, purchase history
+- [x] 02-05-PLAN.md — CatalogView wiring, deploy, and human UAT
 **UI hint**: yes
 
 ### Phase 3: Recipe Presets
@@ -114,7 +114,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. App Foundation | 6/6 | Complete | 2026-04-30 |
-| 2. Bean Catalog & Inventory | 0/5 | Not started | - |
+| 2. Bean Catalog & Inventory | 5/5 | Complete | 2026-05-01 |
 | 3. Recipe Presets | 0/TBD | Not started | - |
 | 4. Brew Log Core | 0/TBD | Not started | - |
 | 5. Brew History & Management | 0/TBD | Not started | - |
