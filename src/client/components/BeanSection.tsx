@@ -26,33 +26,103 @@ const bodyStyle = {
   padding: 'var(--sp-sm) 0',
 }
 
-// Suppress unused import warning — BEAN_PURCHASE_TABLE is reserved for Phase 4 brew deductions
-void BEAN_PURCHASE_TABLE
-
 interface StockInfo {
   remaining_g: number
   total_purchased_g: number
 }
 
-// ─── BeanDetailView (stub — replaced in Plan 04) ────────────────────────────
+// ─── BeanDetailView ──────────────────────────────────────────────────────────
 
 function BeanDetailView({ sysId }: { sysId: string }) {
+  // Stock state
+  const [stock, setStock] = useState<StockInfo | null>(null)
+  const [stockLoading, setStockLoading] = useState(true)
+  const [stockKey, setStockKey] = useState(0)
+
+  // Purchase history state
+  const [history, setHistory] = useState<any[]>([])
+  const [historyKey, setHistoryKey] = useState(0)
+
+  // Add Beans form state
+  const [grams, setGrams] = useState('')
+  const [purchaseDate, setPurchaseDate] = useState(new Date().toISOString().slice(0, 10))
+  const [addError, setAddError] = useState('')
+  const [addLoading, setAddLoading] = useState(false)
+
+  // Archive modal state
   const [showArchive, setShowArchive] = useState(false)
   const [archiveError, setArchiveError] = useState('')
 
   const handleBack = () => navigateToView('catalog', { section: 'beans' }, 'AIBrew — Beans')
 
+  // ── Stock fetch ────────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (!SYS_ID_RE.test(sysId)) return
+    let cancelled = false
+    setStockLoading(true)
+    const g_ck = (window as any).g_ck
+    fetch(`${STOCK_BASE}/${sysId}`, {
+      headers: { Accept: 'application/json', ...(g_ck ? { 'X-UserToken': g_ck } : {}) },
+    })
+      .then(r => r.json())
+      .then(data => { if (!cancelled) setStock(data) })
+      .catch(() => { if (!cancelled) setStock(null) })
+      .finally(() => { if (!cancelled) setStockLoading(false) })
+    return () => { cancelled = true }
+  }, [sysId, stockKey])
+
+  // ── Purchase history fetch ─────────────────────────────────────────────────
+  useEffect(() => {
+    if (!SYS_ID_RE.test(sysId)) return
+    let cancelled = false
+    const g_ck = (window as any).g_ck
+    const params = new URLSearchParams({
+      sysparm_query: `bean=${sysId}^ORDERBYDESCpurchase_date`,
+      sysparm_fields: 'sys_id,grams,purchase_date',
+      sysparm_limit: '20',
+    })
+    fetch(`/api/now/table/${BEAN_PURCHASE_TABLE}?${params}`, {
+      headers: { Accept: 'application/json', ...(g_ck ? { 'X-UserToken': g_ck } : {}) },
+    })
+      .then(r => r.json())
+      .then(data => { if (!cancelled) setHistory(data.result || []) })
+      .catch(() => { if (!cancelled) setHistory([]) })
+    return () => { cancelled = true }
+  }, [sysId, historyKey])
+
+  // ── Add Beans handler ──────────────────────────────────────────────────────
+  const handleAddBeans = async () => {
+    setAddError('')
+    const g_ck = (window as any).g_ck
+    if (!g_ck) { setAddError('Session token not available.'); return }
+    const gramsNum = parseInt(grams, 10)
+    if (!grams || isNaN(gramsNum) || gramsNum <= 0) { setAddError('Enter a valid number of grams.'); return }
+    if (!purchaseDate) { setAddError('Enter a purchase date.'); return }
+    setAddLoading(true)
+    try {
+      const res = await fetch(`/api/now/table/${BEAN_PURCHASE_TABLE}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-UserToken': g_ck },
+        body: JSON.stringify({ bean: sysId, grams: gramsNum, purchase_date: purchaseDate }),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      setGrams('')
+      setPurchaseDate(new Date().toISOString().slice(0, 10))
+      setStockKey(k => k + 1)
+      setHistoryKey(k => k + 1)
+    } catch {
+      setAddError("Couldn't save purchase — try again.")
+    } finally {
+      setAddLoading(false)
+    }
+  }
+
+  // ── Archive handler ────────────────────────────────────────────────────────
   const handleArchive = async () => {
     setArchiveError('')
-    if (!SYS_ID_RE.test(sysId)) {
-      setArchiveError('Invalid record identifier.')
-      return
-    }
+    if (!SYS_ID_RE.test(sysId)) { setArchiveError('Invalid record identifier.'); return }
     const g_ck = (window as any).g_ck
-    if (!g_ck) {
-      setArchiveError('Session token not available — please reload the page.')
-      return
-    }
+    if (!g_ck) { setArchiveError('Session token not available.'); return }
     try {
       const res = await fetch(`/api/now/table/${BEAN_TABLE}/${sysId}`, {
         method: 'PATCH',
@@ -64,42 +134,273 @@ function BeanDetailView({ sysId }: { sysId: string }) {
       handleBack()
     } catch {
       setShowArchive(false)
-      setArchiveError("Couldn't archive — try again in a moment.")
+      setArchiveError("Couldn't archive — try again.")
     }
   }
 
-  // Plan 04 will replace this stub with full RecordProvider detail/edit view.
+  const remainingG = stock?.remaining_g ?? 0
+  const totalPurchasedG = stock?.total_purchased_g ?? 0
+  const isLowStock = remainingG < LOW_STOCK_THRESHOLD && remainingG > 0
+
   return (
-    <div style={{ padding: 'var(--sp-md)' }}>
-      <Button
-        onClicked={handleBack}
-        variant="tertiary"
-        style={{ color: 'var(--aibrew-accent)', padding: 0, marginBottom: 'var(--sp-md)', minHeight: '44px', background: 'none', border: 'none' }}
-      >
-        ← Back
-      </Button>
-      {archiveError && (
-        <div style={{ color: 'var(--aibrew-destructive)', fontFamily: 'var(--aibrew-font-body)', fontSize: '16px', marginBottom: 'var(--sp-sm)' }}>
-          {archiveError}
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '24px', padding: '24px' }}>
+
+      {/* ── Left column: breadcrumb + RecordProvider form ── */}
+      <div style={{ gridColumn: '1', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {/* Breadcrumb */}
+        <div>
+          <Button
+            onClicked={handleBack}
+            variant="tertiary"
+            style={{ fontSize: '12px', color: 'var(--aibrew-ink-3)', padding: 0, background: 'none', border: 'none', minHeight: '32px' }}
+          >
+            ← Beans
+          </Button>
         </div>
-      )}
-      <div style={{ textAlign: 'center', padding: 'var(--sp-xl)', color: 'var(--aibrew-ink-3)', fontFamily: 'var(--aibrew-font-body)' }}>
-        Bean detail coming soon
+
+        {/* Archive error */}
+        {archiveError && (
+          <div style={{ color: 'var(--aibrew-destructive)', fontFamily: 'var(--aibrew-font-body)', fontSize: '14px' }}>
+            {archiveError}
+          </div>
+        )}
+
+        {/* RecordProvider form — detail view (NOT sysId="-1") */}
+        <RecordProvider table={BEAN_TABLE} sysId={sysId} isReadOnly={false}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginBottom: 'var(--sp-md)' }}>
+            <Button
+              onClicked={() => setShowArchive(true)}
+              variant="secondary"
+              style={{
+                color: 'var(--aibrew-destructive)',
+                border: '1px solid var(--aibrew-destructive)',
+                borderRadius: '16px',
+                padding: '4px 8px',
+                fontSize: '14px',
+                minHeight: '32px',
+                backgroundColor: 'transparent',
+              }}
+            >
+              Archive
+            </Button>
+          </div>
+          <FormColumnLayout />
+        </RecordProvider>
       </div>
-      <div style={{ marginTop: 'var(--sp-md)', display: 'flex', justifyContent: 'flex-end' }}>
-        <Button
-          onClicked={() => setShowArchive(true)}
-          variant="secondary"
-          style={{ color: 'var(--aibrew-destructive)', border: '1px solid var(--aibrew-destructive)', borderRadius: '16px', padding: '4px 8px', fontSize: '14px', minHeight: '32px', backgroundColor: 'transparent' }}
-        >
-          Archive
-        </Button>
+
+      {/* ── Right column: KPI strip, stock bar, inventory, Add Beans, history ── */}
+      <div style={{ gridColumn: '2', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+
+        {/* KPI strip — 3 metric boxes */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+          <div style={{ border: '1px solid var(--aibrew-ink-5)', borderRadius: '8px', padding: '12px' }}>
+            <div style={{ fontSize: '12px', color: 'var(--aibrew-ink-3)', fontFamily: 'var(--aibrew-font-body)' }}>on shelf</div>
+            <div style={{ fontSize: '24px', fontWeight: 700, fontFamily: 'var(--aibrew-font-disp)' }}>
+              {stockLoading ? '—' : `${remainingG}g`}
+            </div>
+          </div>
+          <div style={{ border: '1px solid var(--aibrew-ink-5)', borderRadius: '8px', padding: '12px' }}>
+            <div style={{ fontSize: '12px', color: 'var(--aibrew-ink-3)', fontFamily: 'var(--aibrew-font-body)' }}>total ever</div>
+            <div style={{ fontSize: '24px', fontWeight: 700, fontFamily: 'var(--aibrew-font-disp)' }}>
+              {stockLoading ? '—' : `${totalPurchasedG}g`}
+            </div>
+          </div>
+          <div style={{ border: '1px solid var(--aibrew-ink-5)', borderRadius: '8px', padding: '12px' }}>
+            <div style={{ fontSize: '12px', color: 'var(--aibrew-ink-3)', fontFamily: 'var(--aibrew-font-body)' }}>avg rating</div>
+            <div style={{ fontSize: '24px', fontWeight: 700, fontFamily: 'var(--aibrew-font-disp)' }}>—</div>
+          </div>
+        </div>
+
+        {/* Stock progress bar (D-05) */}
+        {stockLoading ? (
+          <div style={{ background: 'var(--aibrew-ink-5)', borderRadius: '4px', height: '8px', width: '60%' }} />
+        ) : (
+          <div>
+            <div
+              aria-label={`${remainingG}g remaining of ${totalPurchasedG}g total`}
+              style={{ background: 'var(--aibrew-ink-5)', borderRadius: '4px', height: '8px', width: '100%', overflow: 'hidden' }}
+            >
+              <div
+                style={{
+                  width: `${totalPurchasedG > 0 ? Math.min(100, (remainingG / totalPurchasedG) * 100) : 0}%`,
+                  height: '100%',
+                  background: isLowStock ? 'var(--aibrew-destructive)' : 'var(--aibrew-accent)',
+                  borderRadius: '4px',
+                  transition: 'width 0.3s ease',
+                }}
+              />
+            </div>
+            <div style={{ fontSize: '14px', color: 'var(--aibrew-ink-3)', marginTop: '4px', fontFamily: 'var(--aibrew-font-body)' }}>
+              {remainingG}g / {totalPurchasedG}g
+            </div>
+            {isLowStock && (
+              <span
+                style={{
+                  display: 'inline-block',
+                  marginTop: '4px',
+                  background: 'var(--aibrew-destructive)',
+                  color: '#fff',
+                  borderRadius: '8px',
+                  padding: '2px 8px',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                }}
+              >
+                ⚠ Low stock
+              </span>
+            )}
+          </div>
+        )}
+
+        {/* Inventory bag list — each bag shown as active (brew deductions deferred to Phase 3) */}
+        <div>
+          <h3 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '12px', fontFamily: 'var(--aibrew-font-disp)' }}>
+            Inventory · pantry
+          </h3>
+          {history.length === 0 ? (
+            <p style={{ color: 'var(--aibrew-ink-3)', fontSize: '14px', fontFamily: 'var(--aibrew-font-body)' }}>
+              No bags recorded yet.
+            </p>
+          ) : (
+            history.map((row: any) => (
+              <div
+                key={row.sys_id?.value ?? row.sys_id}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '8px 0',
+                  borderBottom: '1px solid var(--aibrew-ink-5)',
+                }}
+              >
+                <span style={{ fontSize: '14px', color: 'var(--aibrew-ink-3)', fontFamily: 'var(--aibrew-font-body)' }}>
+                  {row.purchase_date?.display_value ?? row.purchase_date}
+                </span>
+                <span style={{ fontSize: '14px', fontWeight: 600, fontFamily: 'var(--aibrew-font-body)' }}>
+                  {row.grams?.value ?? row.grams}g
+                </span>
+                <span
+                  style={{
+                    fontSize: '12px',
+                    color: 'var(--aibrew-ink-3)',
+                    background: 'var(--aibrew-paper-2)',
+                    borderRadius: '8px',
+                    padding: '2px 6px',
+                    fontFamily: 'var(--aibrew-font-body)',
+                  }}
+                >
+                  active
+                </span>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Add Beans inline form (D-06) */}
+        {/* NOTE: native <input> elements are intentional — @servicenow/react-components has no
+            number or date input primitive. Using RecordProvider+FormColumnLayout for a 2-field
+            inline form is architecturally inappropriate. This exception is documented in the plan. */}
+        <div>
+          <h3 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '12px', fontFamily: 'var(--aibrew-font-disp)' }}>
+            Add Beans
+          </h3>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '12px', marginBottom: '4px', fontFamily: 'var(--aibrew-font-body)' }}>
+                Grams
+              </label>
+              <input
+                type="number"
+                min="1"
+                value={grams}
+                onChange={e => setGrams(e.target.value)}
+                style={{
+                  width: '100px',
+                  padding: '6px 8px',
+                  border: '1px solid var(--aibrew-ink)',
+                  borderRadius: '4px',
+                  fontFamily: 'var(--aibrew-font-body)',
+                  fontSize: '14px',
+                }}
+              />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '12px', marginBottom: '4px', fontFamily: 'var(--aibrew-font-body)' }}>
+                Purchase date
+              </label>
+              <input
+                type="date"
+                value={purchaseDate}
+                onChange={e => setPurchaseDate(e.target.value)}
+                style={{
+                  padding: '6px 8px',
+                  border: '1px solid var(--aibrew-ink)',
+                  borderRadius: '4px',
+                  fontFamily: 'var(--aibrew-font-body)',
+                  fontSize: '14px',
+                }}
+              />
+            </div>
+            <Button
+              onClicked={handleAddBeans}
+              variant="primary"
+              style={{ opacity: addLoading ? 0.6 : 1, pointerEvents: addLoading ? 'none' : 'auto', minHeight: '36px' }}
+            >
+              {addLoading ? 'Saving…' : 'Add Beans'}
+            </Button>
+          </div>
+          {addError && (
+            <p style={{ color: 'var(--aibrew-destructive)', fontSize: '14px', marginTop: '8px', fontFamily: 'var(--aibrew-font-body)' }}>
+              {addError}
+            </p>
+          )}
+        </div>
+
+        {/* Purchase history (D-07) */}
+        <div>
+          <h3 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '12px', fontFamily: 'var(--aibrew-font-disp)' }}>
+            Purchase history
+            {history.length > 0 && (
+              <span style={{ fontSize: '12px', fontWeight: 400, color: 'var(--aibrew-ink-3)', marginLeft: '8px', fontFamily: 'var(--aibrew-font-body)' }}>
+                {history.length} {history.length === 1 ? 'entry' : 'entries'}
+              </span>
+            )}
+          </h3>
+          {history.length === 0 ? (
+            <p style={{ color: 'var(--aibrew-ink-3)', fontSize: '14px', fontFamily: 'var(--aibrew-font-body)' }}>
+              No purchases yet.
+            </p>
+          ) : (
+            history.map((row: any) => (
+              <div
+                key={row.sys_id?.value ?? row.sys_id}
+                style={{
+                  display: 'flex',
+                  gap: '16px',
+                  padding: '6px 0',
+                  borderBottom: '1px solid var(--aibrew-ink-5)',
+                  fontSize: '14px',
+                  fontFamily: 'var(--aibrew-font-body)',
+                }}
+              >
+                <span style={{ color: 'var(--aibrew-ink-3)', minWidth: '80px' }}>
+                  {row.purchase_date?.display_value ?? row.purchase_date}
+                </span>
+                <span style={{ fontWeight: 600 }}>
+                  {row.grams?.value ?? row.grams}g
+                </span>
+              </div>
+            ))
+          )}
+        </div>
       </div>
+
+      {/* ── Archive confirmation modal (D-09) ── */}
       <Modal
         opened={showArchive}
         footerActions={[
           { label: 'Archive', variant: 'primary-negative' },
-          { label: 'Keep it', variant: 'secondary' },
+          { label: 'Cancel', variant: 'secondary' },
         ]}
         onFooterActionClicked={(e: CustomEvent) => {
           if (e.detail?.payload?.action?.label === 'Archive') handleArchive()
