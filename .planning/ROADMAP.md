@@ -65,10 +65,15 @@ Plans:
 **Depends on**: Phase 2
 **Requirements**: RECIPE-01, RECIPE-02
 **Success Criteria** (what must be TRUE):
-  1. After logging a brew, user can save the current form values as a named preset
+  1. After logging a brew, user can save the current form values as a named preset (RECIPE-01 — DEFERRED to Phase 4)
   2. User can view all saved presets in a dedicated management screen
-  3. User can edit a preset's name and values, and delete a preset, from that screen
-**Plans**: TBD
+  3. User can edit a preset's name and values, and archive a preset, from that screen
+**Plans**: 4 plans
+Plans:
+- [ ] 03-01-PLAN.md — Fluent artifacts: recipe table, 4 ACLs, index.now.ts exports, deploy
+- [ ] 03-02-PLAN.md — RecipeSection.tsx list view: card grid, create modal
+- [ ] 03-03-PLAN.md — RecipeSection.tsx detail/edit/archive + CatalogView wiring, deploy
+- [ ] 03-04-PLAN.md — Human UAT: verify all RECIPE-02 criteria with non-admin test user
 **UI hint**: yes
 
 ### Phase 4: Brew Log Core
@@ -115,7 +120,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. App Foundation | 6/6 | Complete | 2026-04-30 |
 | 2. Bean Catalog & Inventory | 5/5 | Complete | 2026-05-01 |
-| 3. Recipe Presets | 0/TBD | Not started | - |
+| 3. Recipe Presets | 0/4 | Not started | - |
 | 4. Brew Log Core | 0/TBD | Not started | - |
 | 5. Brew History & Management | 0/TBD | Not started | - |
 | 6. Analytics | 0/TBD | Not started | - |
