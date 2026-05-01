@@ -21,7 +21,7 @@ export const x_664529_aibrew_bean = Table({
       },
     }),
     roast_date:  DateColumn({ label: 'Roast Date' }),
-    roaster:     ReferenceColumn({ label: 'Roaster', referenceTable: 'x_664529_aibrew_roaster', mandatory: true }),
+    roaster:     ReferenceColumn({ label: 'Roaster', referenceTable: x_664529_aibrew_roaster.name, mandatory: true }),
     active:      BooleanColumn({ label: 'Active', default: true }),
   },
 })

@@ -7,7 +7,7 @@ export const x_664529_aibrew_bean_purchase = Table({
   label: 'Bean Purchase',
   display: 'bean',
   schema: {
-    bean:          ReferenceColumn({ label: 'Bean', referenceTable: 'x_664529_aibrew_bean', mandatory: true }),
+    bean:          ReferenceColumn({ label: 'Bean', referenceTable: x_664529_aibrew_bean.name, mandatory: true }),
     grams:         IntegerColumn({ label: 'Grams', mandatory: true }),
     purchase_date: DateColumn({ label: 'Purchase Date', mandatory: true }),
     active:        BooleanColumn({ label: 'Active', default: true }),

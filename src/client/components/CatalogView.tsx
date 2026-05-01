@@ -3,11 +3,12 @@ import { Button } from '@servicenow/react-components/Button'
 import { getViewParams, navigateToView } from '../utils/navigate'
 import RoasterSection from './RoasterSection'
 import EquipmentSection from './EquipmentSection'
+import BeanSection from './BeanSection'
 
 const SUB_NAV = [
   { id: 'roasters',  label: 'Roasters',  disabled: false },
   { id: 'equipment', label: 'Equipment', disabled: false },
-  { id: 'beans',     label: 'Beans',     disabled: true  },
+  { id: 'beans',     label: 'Beans',     disabled: false },
   { id: 'recipes',   label: 'Recipes',   disabled: true  },
 ]
 
@@ -36,6 +37,8 @@ export default function CatalogView({ params }: CatalogViewProps) {
         return <RoasterSection params={params} />
       case 'equipment':
         return <EquipmentSection params={params} />
+      case 'beans':
+        return <BeanSection params={params} />
       default:
         return null
     }

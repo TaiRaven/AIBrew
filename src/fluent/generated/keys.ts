@@ -13,6 +13,34 @@ declare global {
                         table: 'sys_app_application'
                         id: 'b20c83341ef84c09af92bad6b70da64d'
                     }
+                    bean_create: {
+                        table: 'sys_security_acl'
+                        id: 'a99012245b92423f884f255c594d3a88'
+                    }
+                    bean_delete: {
+                        table: 'sys_security_acl'
+                        id: '3061e7df5f3b4a44b392e58b79bfbc2f'
+                    }
+                    bean_purchase_create: {
+                        table: 'sys_security_acl'
+                        id: 'fa5a37f61a3b4d15a2ff3e9937696a92'
+                    }
+                    bean_purchase_delete: {
+                        table: 'sys_security_acl'
+                        id: 'b48b29886a9344dc9372558eb593b2f7'
+                    }
+                    bean_purchase_read: {
+                        table: 'sys_security_acl'
+                        id: '36478b8b9c934b57b8ce97928d519735'
+                    }
+                    bean_purchase_write: {
+                        table: 'sys_security_acl'
+                        id: 'de69f92b79ea43cabfd5722bde5f410b'
+                    }
+                    bean_read: {
+                        table: 'sys_security_acl'
+                        id: 'cc05ae58a26f44a1b287999e1db0eab2'
+                    }
                     bean_stock_api: {
                         table: 'sys_ws_definition'
                         id: 'ac554a26c0cd4850b93b90980d60b520'
@@ -24,6 +52,10 @@ declare global {
                     bean_stock_get: {
                         table: 'sys_ws_operation'
                         id: 'bcf5c316f43a40de93749d7db7b1104a'
+                    }
+                    bean_write: {
+                        table: 'sys_security_acl'
+                        id: '335d5927d2cc4e24b5b662aea5cc2394'
                     }
                     BeanStockHelper: {
                         table: 'sys_script_include'
@@ -80,11 +112,43 @@ declare global {
                 }
                 composite: [
                     {
+                        table: 'sys_documentation'
+                        id: '04675a9ea76144ea99da2a26a2c5d9c0'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'active'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_db_object'
+                        id: '06738dfcaec44a0495da80ee896e03af'
+                        key: {
+                            name: 'x_664529_aibrew_bean_purchase'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '0c2225c43bac47c9b153316365c87ce8'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'name'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '0c3167991b0942b49b394db5cb99012f'
                         key: {
                             name: 'x_664529_aibrew_equipment'
                             element: 'active'
+                        }
+                    },
+                    {
+                        table: 'ua_table_licensing_config'
+                        id: '13d304c199be446a89ba31baa39f558e'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
                         }
                     },
                     {
@@ -104,10 +168,41 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_choice'
+                        id: '1e70a1ec6e314cad8bf6d3da218b3936'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'roast_level'
+                            value: 'extra_dark'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '1f7b9d82540e4a5e855da4e8ab041715'
+                        key: {
+                            name: 'x_664529_aibrew_bean_purchase'
+                            element: 'active'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sys_db_object'
                         id: '2287fae8e2474cc3a6307b5058b01729'
                         key: {
                             name: 'x_664529_aibrew_roaster'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '26ad8edee40b4aa19651fa7b4a436678'
+                        key: {
+                            sys_security_acl: 'de69f92b79ea43cabfd5722bde5f410b'
+                            sys_user_role: {
+                                id: 'b1a38579b92548c7a566ab3dec31e35b'
+                                key: {
+                                    name: 'x_664529_aibrew.user'
+                                }
+                            }
                         }
                     },
                     {
@@ -132,6 +227,15 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_choice'
+                        id: '36c37993a4a248f5879c3b6cc7dee99f'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'roast_level'
+                            value: 'medium'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: '3779447641dc4ac68571b6ec18426005'
                         key: {
@@ -153,6 +257,15 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_documentation'
+                        id: '3aa388b79ce6451c8c8b25bd5e0dc0ea'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'origin'
+                            language: 'en'
+                        }
+                    },
+                    {
                         table: 'sn_glider_source_artifact'
                         id: '3cd28a450c6c42ae8025b3979cf23c8d'
                         key: {
@@ -169,6 +282,14 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: '4318ef6234f046b8a2fd07cdd3560177'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'roast_date'
+                        }
+                    },
+                    {
                         table: 'sys_ui_page'
                         id: '437e9bae7316435cb7de2a11eddd20d3'
                         key: {
@@ -182,6 +303,19 @@ declare global {
                             name: 'x_664529_aibrew_equipment'
                             element: 'name'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '48a3d90c5a0f4ff6968e832f5c333dea'
+                        key: {
+                            sys_security_acl: 'fa5a37f61a3b4d15a2ff3e9937696a92'
+                            sys_user_role: {
+                                id: 'b1a38579b92548c7a566ab3dec31e35b'
+                                key: {
+                                    name: 'x_664529_aibrew.user'
+                                }
+                            }
                         }
                     },
                     {
@@ -203,6 +337,15 @@ declare global {
                                     name: 'x_664529_aibrew.user'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '524ac77098894bbfa92fef92e080100f'
+                        key: {
+                            name: 'x_664529_aibrew_bean_purchase'
+                            element: 'purchase_date'
+                            language: 'en'
                         }
                     },
                     {
@@ -254,12 +397,68 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: '64e4a96249bf4e44ab86209a5b2abc60'
+                        key: {
+                            name: 'x_664529_aibrew_bean_purchase'
+                            element: 'NULL'
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: '66ee3c582feb4df6b24599de64a89f90'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'roast_level'
+                            value: 'medium_light'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '69ffd3b10c6b424c81cae51d7d3cea5e'
                         key: {
                             name: 'x_664529_aibrew_roaster'
                             element: 'website'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '6b3afbbcb68e45769041b4decb0b90d5'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'NULL'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '74e8d2bd71fa49f08189d0eebe6e41a0'
+                        key: {
+                            sys_security_acl: '335d5927d2cc4e24b5b662aea5cc2394'
+                            sys_user_role: {
+                                id: 'b1a38579b92548c7a566ab3dec31e35b'
+                                key: {
+                                    name: 'x_664529_aibrew.user'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '7609fef4fdb142b8b04ce880844950e4'
+                        key: {
+                            name: 'x_664529_aibrew_bean_purchase'
+                            element: 'grams'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '76df04cbba6d44ee90e69a889d01ec7c'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'origin'
                         }
                     },
                     {
@@ -272,12 +471,55 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: '7b241cc524344eabbb9c52e92abaa9e2'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'roaster'
+                        }
+                    },
+                    {
                         table: 'sys_documentation'
                         id: '7bc858d36b9c4e0f8868c051f842c342'
                         key: {
                             name: 'x_664529_aibrew_equipment'
                             element: 'active'
                             language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '8947ca4ea7114a949db8c92cf35aac32'
+                        key: {
+                            sys_security_acl: '36478b8b9c934b57b8ce97928d519735'
+                            sys_user_role: {
+                                id: 'b1a38579b92548c7a566ab3dec31e35b'
+                                key: {
+                                    name: 'x_664529_aibrew.user'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: '8bbc6b95c4774825b5b7a0b93a3b2622'
+                        key: {
+                            sys_security_acl: 'a99012245b92423f884f255c594d3a88'
+                            sys_user_role: {
+                                id: 'b1a38579b92548c7a566ab3dec31e35b'
+                                key: {
+                                    name: 'x_664529_aibrew.user'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: '97754c8cda624646a9a9996ace49418c'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'roast_level'
+                            value: 'medium_dark'
                         }
                     },
                     {
@@ -293,6 +535,14 @@ declare global {
                         id: '9822f3da72014adb85c026329fc741cb'
                         key: {
                             name: 'x_664529_aibrew_roaster'
+                            element: 'active'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: '9918f03c6fd94606a11c5e78e2515433'
+                        key: {
+                            name: 'x_664529_aibrew_bean_purchase'
                             element: 'active'
                         }
                     },
@@ -314,11 +564,63 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_security_acl_role'
+                        id: '9ad3c4b9b028444483e0a1a53fca0cfb'
+                        key: {
+                            sys_security_acl: 'cc05ae58a26f44a1b287999e1db0eab2'
+                            sys_user_role: {
+                                id: 'b1a38579b92548c7a566ab3dec31e35b'
+                                key: {
+                                    name: 'x_664529_aibrew.user'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: '9f5b3bc870134a2d96d04a9f46536ad9'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'roast_level'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'a5c481024863442a82844188a7ae5034'
+                        key: {
+                            name: 'x_664529_aibrew_bean_purchase'
+                            element: 'bean'
+                        }
+                    },
+                    {
                         table: 'sys_dictionary'
                         id: 'a6efcd7fa3254e8aa0232ea0474d3391'
                         key: {
                             name: 'x_664529_aibrew_roaster'
                             element: 'NULL'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'a74f7cf6f0cc49199fc87e7c8b010867'
+                        key: {
+                            sys_security_acl: '3061e7df5f3b4a44b392e58b79bfbc2f'
+                            sys_user_role: {
+                                id: 'b1a38579b92548c7a566ab3dec31e35b'
+                                key: {
+                                    name: 'x_664529_aibrew.user'
+                                }
+                            }
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'aa9cd0cfca8b43b88b3e69f4a2f70847'
+                        key: {
+                            name: 'x_664529_aibrew_bean_purchase'
+                            element: 'bean'
+                            language: 'en'
                         }
                     },
                     {
@@ -328,6 +630,19 @@ declare global {
                             name: 'x_664529_aibrew_equipment'
                             element: 'type'
                             value: 'grinder'
+                        }
+                    },
+                    {
+                        table: 'sys_security_acl_role'
+                        id: 'ad2154e443914d7c9e557a4ae387d760'
+                        key: {
+                            sys_security_acl: 'b48b29886a9344dc9372558eb593b2f7'
+                            sys_user_role: {
+                                id: 'b1a38579b92548c7a566ab3dec31e35b'
+                                key: {
+                                    name: 'x_664529_aibrew.user'
+                                }
+                            }
                         }
                     },
                     {
@@ -345,10 +660,61 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_dictionary'
+                        id: 'b2e055f78bf0477884717e92a447219f'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'name'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'b4dcd8aa1cbe4cb78d0e01d2e3b55eb9'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'roaster'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'b4e09d13a6cf479180871f02c93ae22c'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'roast_level'
+                        }
+                    },
+                    {
                         table: 'sys_db_object'
                         id: 'b6ace7c285664a1eafe6c54a2b417c60'
                         key: {
                             name: 'x_664529_aibrew_equipment'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'b9cd65c7d5e84a31adff9b38ed4e472e'
+                        key: {
+                            name: 'x_664529_aibrew_bean_purchase'
+                            element: 'NULL'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_choice_set'
+                        id: 'baf0a0e91f5b41b599494fc3012df14c'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'roast_level'
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: 'c0487cded629471188d5b325f7963c81'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'roast_level'
+                            value: 'dark'
                         }
                     },
                     {
@@ -366,6 +732,15 @@ declare global {
                         key: {
                             name: 'x_664529_aibrew_equipment'
                             element: 'NULL'
+                            language: 'en'
+                        }
+                    },
+                    {
+                        table: 'sys_documentation'
+                        id: 'cae56a92c3204f1392f0d64875129847'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'roast_date'
                             language: 'en'
                         }
                     },
@@ -417,6 +792,36 @@ declare global {
                         }
                     },
                     {
+                        table: 'sys_db_object'
+                        id: 'd2f5159dc6f14296b4bdea9ef2cae498'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'd7e0a437289144a18e52d8cfb8145bca'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'NULL'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'd9e716b9fda6471783d1b5a4919bb451'
+                        key: {
+                            name: 'x_664529_aibrew_bean_purchase'
+                            element: 'grams'
+                        }
+                    },
+                    {
+                        table: 'ua_table_licensing_config'
+                        id: 'e2a78da33adc4537b0ceb6cf25f12f85'
+                        key: {
+                            name: 'x_664529_aibrew_bean_purchase'
+                        }
+                    },
+                    {
                         table: 'sn_glider_source_artifact_m2m'
                         id: 'e3b478bcf3074b14977977a1ca75da32'
                         key: {
@@ -448,6 +853,31 @@ declare global {
                                     name: 'x_664529_aibrew.user'
                                 }
                             }
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'ea709fddae1b4ff2ad80f23c33e1c871'
+                        key: {
+                            name: 'x_664529_aibrew_bean_purchase'
+                            element: 'purchase_date'
+                        }
+                    },
+                    {
+                        table: 'sys_dictionary'
+                        id: 'ef1bfcfa174f4c75be52c42e443bc4eb'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'active'
+                        }
+                    },
+                    {
+                        table: 'sys_choice'
+                        id: 'f206295b38cf4f59a2ed7e45cfe414c2'
+                        key: {
+                            name: 'x_664529_aibrew_bean'
+                            element: 'roast_level'
+                            value: 'light'
                         }
                     },
                     {
