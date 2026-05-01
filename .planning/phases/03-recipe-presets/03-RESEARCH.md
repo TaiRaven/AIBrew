@@ -466,7 +466,7 @@ const handleArchive = async () => {
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Equipment display on preset card (list view)**
    - What we know: Table API v2 automatically resolves reference `display_value` for `ReferenceColumn` fields — `display(record.equipment)` will return the equipment name.
