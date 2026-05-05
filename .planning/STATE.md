@@ -9,8 +9,8 @@ progress:
   total_phases: 6
   completed_phases: 2
   total_plans: 15
-  completed_plans: 11
-  percent: 33
+  completed_plans: 12
+  percent: 37
 ---
 
 # Project State
@@ -25,11 +25,11 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 3 of 6 (Recipe Presets)
-Plan: 1 of 4 in current phase
-Status: In progress — Phase 3 plan 01 complete (recipe schema + ACLs), plans 02-04 remaining
-Last activity: 2026-05-05 — Phase 3 plan 01 executed; recipe table + ACLs deployed (instance wake required)
+Plan: 2 of 4 in current phase
+Status: In progress — Phase 3 plans 01-02 complete (recipe schema + ACLs + list view + create modal), plans 03-04 remaining
+Last activity: 2026-05-05 — Phase 3 plan 02 executed; RecipeSection.tsx with card grid and create modal complete
 
-Progress: [██░░░░░░░░] 20%
+Progress: [███░░░░░░░] 37%
 
 ## Phase 1 — Complete (2026-04-30)
 
@@ -59,6 +59,9 @@ Code review open items (01-REVIEW.md):
 - Roadmap: Basic in-page timer included in v1 (BREW-04); screen-off persistence deferred to v2 (BREW-12)
 - Roadmap: Low-stock threshold hardcoded at 50 g for v1 (INV-03); user-configurable threshold deferred to v2 (INV-05)
 - Roadmap: Analytics phase (6) built last — useful only after real brews accumulate
+- RecipeSection.tsx: equipment field omitted from list fetch per D-08 — detail view only; card shows name/method/ratio
+- RecipeSection.tsx: isMobile breakpoint ≤400px; bottom-sheet modal on mobile, centered overlay on desktop
+- RecipeSection.tsx: sys_id field may be object or scalar — handled with `typeof r.sys_id === 'object' ? value(r.sys_id) : r.sys_id`
 
 ### Pending Todos
 
