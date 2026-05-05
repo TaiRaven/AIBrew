@@ -9,8 +9,8 @@ progress:
   total_phases: 6
   completed_phases: 2
   total_plans: 15
-  completed_plans: 12
-  percent: 37
+  completed_plans: 13
+  percent: 40
 ---
 
 # Project State
@@ -25,11 +25,11 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 3 of 6 (Recipe Presets)
-Plan: 2 of 4 in current phase
-Status: In progress — Phase 3 plans 01-02 complete (recipe schema + ACLs + list view + create modal), plans 03-04 remaining
-Last activity: 2026-05-05 — Phase 3 plan 02 executed; RecipeSection.tsx with card grid and create modal complete
+Plan: 3 of 4 in current phase
+Status: In progress — Phase 3 plans 01-03 complete (recipe schema + ACLs + list view + create modal + detail/edit/archive + CatalogView wiring + deploy), plan 04 remaining
+Last activity: 2026-05-05 — Phase 3 plan 03 executed; RecipeDetailView full implementation deployed to instance
 
-Progress: [███░░░░░░░] 37%
+Progress: [████░░░░░░] 40%
 
 ## Phase 1 — Complete (2026-04-30)
 
