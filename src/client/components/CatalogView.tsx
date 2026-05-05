@@ -4,12 +4,13 @@ import { getViewParams, navigateToView } from '../utils/navigate'
 import RoasterSection from './RoasterSection'
 import EquipmentSection from './EquipmentSection'
 import BeanSection from './BeanSection'
+import RecipeSection from './RecipeSection'
 
 const SUB_NAV = [
   { id: 'roasters',  label: 'Roasters',  disabled: false },
   { id: 'equipment', label: 'Equipment', disabled: false },
   { id: 'beans',     label: 'Beans',     disabled: false },
-  { id: 'recipes',   label: 'Recipes',   disabled: true  },
+  { id: 'recipes',   label: 'Recipes',   disabled: false },
 ]
 
 interface CatalogViewProps {
@@ -39,6 +40,8 @@ export default function CatalogView({ params }: CatalogViewProps) {
         return <EquipmentSection params={params} />
       case 'beans':
         return <BeanSection params={params} />
+      case 'recipes':
+        return <RecipeSection params={params} />
       default:
         return null
     }
