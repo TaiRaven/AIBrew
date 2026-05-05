@@ -73,16 +73,95 @@ function RecipeCard({ record, onClick }: { record: any; onClick: () => void }) {
   )
 }
 
-// ─── RecipeDetailView (stub — completed in Plan 03) ───────────────────────────
+// ─── RecipeDetailView ─────────────────────────────────────────────────────────
 
 function RecipeDetailView({ sysId }: { sysId: string }) {
+  const [showArchive, setShowArchive] = useState(false)
+  const [archiveError, setArchiveError] = useState('')
+
   const handleBack = () => navigateToView('catalog', { section: 'recipes' }, 'AIBrew — Recipes')
+
+  const handleArchive = async () => {
+    setArchiveError('')
+    if (!SYS_ID_RE.test(sysId)) {
+      setArchiveError('Invalid record identifier.')
+      return
+    }
+    const g_ck = (window as any).g_ck
+    if (!g_ck) {
+      setArchiveError('Session token not available — please reload the page.')
+      return
+    }
+    try {
+      const res = await fetch(`/api/now/table/${RECIPE_TABLE}/${sysId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'X-UserToken': g_ck },
+        body: JSON.stringify({ active: false }),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      setShowArchive(false)
+      handleBack()
+    } catch {
+      setShowArchive(false)
+      setArchiveError("Couldn't archive — try again in a moment.")
+    }
+  }
+
   return (
     <div style={{ padding: 'var(--sp-md)' }}>
-      <Button onClicked={handleBack} variant="tertiary" style={{ color: 'var(--aibrew-accent)', padding: 0, marginBottom: 'var(--sp-md)', minHeight: '44px', background: 'none', border: 'none' }}>
+      <Button
+        onClicked={handleBack}
+        variant="tertiary"
+        style={{ color: 'var(--aibrew-accent)', padding: 0, marginBottom: 'var(--sp-md)', minHeight: '44px', background: 'none', border: 'none' }}
+      >
         ← Recipes
       </Button>
-      <div style={{ fontFamily: 'var(--aibrew-font-body)', color: 'var(--aibrew-ink-3)' }}>Loading…</div>
+
+      {archiveError && (
+        <div style={{ color: 'var(--aibrew-destructive)', fontFamily: 'var(--aibrew-font-body)', fontSize: '16px', marginBottom: 'var(--sp-sm)' }}>
+          {archiveError}
+        </div>
+      )}
+
+      <RecordProvider table={RECIPE_TABLE} sysId={sysId} isReadOnly={false}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 'var(--sp-md)' }}>
+          <Button
+            onClicked={() => setShowArchive(true)}
+            variant="secondary"
+            style={{
+              color: 'var(--aibrew-destructive)',
+              border: '1px solid var(--aibrew-destructive)',
+              borderRadius: '16px',
+              padding: '4px 8px',
+              fontSize: '14px',
+              minHeight: '32px',
+              backgroundColor: 'transparent',
+            }}
+          >
+            Archive
+          </Button>
+        </div>
+        <FormActionBar />
+        <FormColumnLayout />
+      </RecordProvider>
+
+      <Modal
+        opened={showArchive}
+        footerActions={[
+          { label: 'Archive', variant: 'primary-negative' },
+          { label: 'Cancel', variant: 'secondary' },
+        ]}
+        onFooterActionClicked={(e: CustomEvent) => {
+          if (e.detail?.payload?.action?.label === 'Archive') handleArchive()
+          else setShowArchive(false)
+        }}
+        onOpenedSet={(e: CustomEvent) => { if (!e.detail?.value) setShowArchive(false) }}
+      >
+        <h2 style={modalHeadingStyle}>Archive this preset?</h2>
+        <div style={{ fontFamily: 'var(--aibrew-font-body)', fontSize: '16px', color: 'var(--aibrew-ink)', padding: 'var(--sp-sm) 0' }}>
+          Archived presets won't appear in the brew form or this list.
+        </div>
+      </Modal>
     </div>
   )
 }
