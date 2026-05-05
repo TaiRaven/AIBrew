@@ -25,11 +25,11 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 3 of 6 (Recipe Presets)
-Plan: 0 of 4 in current phase
-Status: Ready to execute — Phase 3 planned, 4 plans in 4 waves
-Last activity: 2026-05-01 — Phase 3 planned, 4 plans ready to execute
+Plan: 1 of 4 in current phase
+Status: In progress — Phase 3 plan 01 complete (recipe schema + ACLs), plans 02-04 remaining
+Last activity: 2026-05-05 — Phase 3 plan 01 executed; recipe table + ACLs deployed (instance wake required)
 
-Progress: [█░░░░░░░░░] 17%
+Progress: [██░░░░░░░░] 20%
 
 ## Phase 1 — Complete (2026-04-30)
 
@@ -52,6 +52,9 @@ Code review open items (01-REVIEW.md):
 ### Decisions
 
 - Scope prefix: `x_664529_aibrew` (company code: `664529`)
+- Recipe preset is bean-agnostic (D-01) — no bean reference on recipe table; bean paired at brew-time in Phase 4
+- Brew ratio (water/dose) is computed at render time, never stored (D-03) — no ratio column on recipe table
+- Recipe field names are locked as Phase 4 schema contract: name, method, equipment, dose_weight_g, water_weight_g, grind_size, notes, active
 - Roadmap: 3-table model (roaster / bean / bean_purchase) chosen — architecturally correct, required for ledger inventory pattern
 - Roadmap: Basic in-page timer included in v1 (BREW-04); screen-off persistence deferred to v2 (BREW-12)
 - Roadmap: Low-stock threshold hardcoded at 50 g for v1 (INV-03); user-configurable threshold deferred to v2 (INV-05)
