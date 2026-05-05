@@ -21,55 +21,53 @@ const modalHeadingStyle = {
 // ─── RecipeCard ───────────────────────────────────────────────────────────────
 
 function RecipeCard({ record, onClick }: { record: any; onClick: () => void }) {
-  const name = display(record.name) || value(record.name) || ''
-  const methodLabel = display(record.method) || value(record.method) || '—'
-  const dose = parseFloat(value(record.dose_weight_g)) || 0
-  const water = parseFloat(value(record.water_weight_g)) || 0
+  const name = record.name?.display_value ?? record.name?.value ?? record.name ?? ''
+  const methodLabel = record.method?.display_value ?? record.method?.value ?? ''
+  const dose = parseFloat(record.dose_weight_g?.value ?? record.dose_weight_g ?? '0') || 0
+  const water = parseFloat(record.water_weight_g?.value ?? record.water_weight_g ?? '0') || 0
   const ratio = dose > 0 ? (water / dose).toFixed(1) : '—'
-  const ratioLine = dose > 0 && water > 0 ? `${dose}g • ${water}g  1:${ratio}` : ''
+  const ratioLine = dose > 0 && water > 0 ? `${dose}g · ${water}g  1:${ratio}` : ''
 
   return (
-    <Button
-      onClicked={onClick}
-      variant="tertiary"
+    <button
+      onClick={onClick}
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
+        display: 'block',
+        width: '100%',
         padding: '12px',
         border: '2px solid var(--aibrew-ink)',
         borderRadius: '6px',
         background: 'var(--aibrew-paper)',
         textAlign: 'left',
-        width: '100%',
         minHeight: '80px',
         boxShadow: '3px 4px 0 rgba(0,0,0,.08)',
         cursor: 'pointer',
       }}
     >
-      <div style={{ fontWeight: 700, fontSize: '15px', color: 'var(--aibrew-ink)', fontFamily: 'var(--aibrew-font-body)' }}>
+      <div style={{ fontWeight: 700, fontSize: '15px', color: 'var(--aibrew-ink)', fontFamily: 'var(--aibrew-font-body)', marginBottom: '4px' }}>
         {name}
       </div>
-      {methodLabel && methodLabel !== '—' && (
-        <span style={{
-          display: 'inline-block',
-          background: 'var(--aibrew-accent)',
-          color: '#fff',
-          borderRadius: '8px',
-          padding: '2px 8px',
-          fontSize: '12px',
-          fontWeight: 600,
-          marginTop: '4px',
-        }}>
-          {methodLabel}
-        </span>
+      {methodLabel && (
+        <div style={{ marginBottom: '4px' }}>
+          <span style={{
+            display: 'inline-block',
+            background: 'var(--aibrew-accent)',
+            color: '#fff',
+            borderRadius: '8px',
+            padding: '2px 8px',
+            fontSize: '12px',
+            fontWeight: 600,
+          }}>
+            {methodLabel}
+          </span>
+        </div>
       )}
       {ratioLine && (
-        <div style={{ fontSize: '13px', color: 'var(--aibrew-ink-3)', marginTop: '4px', fontFamily: 'var(--aibrew-font-body)' }}>
+        <div style={{ fontSize: '13px', color: 'var(--aibrew-ink-3)', fontFamily: 'var(--aibrew-font-body)' }}>
           {ratioLine}
         </div>
       )}
-    </Button>
+    </button>
   )
 }
 
