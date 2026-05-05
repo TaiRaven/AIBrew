@@ -11,3 +11,5 @@ export { bean_read, bean_write, bean_create, bean_delete } from './acls/bean-acl
 export { bean_purchase_read, bean_purchase_write, bean_purchase_create, bean_purchase_delete } from './acls/bean-purchase-acls.now'
 export { bean_stock_api } from './scripted-rest/bean-stock-api.now'
 export { BeanStockHelper } from './script-includes/bean-stock-helper.now'
+export { x_664529_aibrew_recipe } from './tables/recipe.now'
+export { recipe_read, recipe_write, recipe_create, recipe_delete } from './acls/recipe-acls.now'
