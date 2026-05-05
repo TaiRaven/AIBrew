@@ -192,6 +192,7 @@ function RecipeListView() {
     const params = new URLSearchParams({
       sysparm_query: 'active=true',
       sysparm_fields: 'sys_id,name,method,dose_weight_g,water_weight_g,grind_size',
+      sysparm_display_value: 'all',
       sysparm_limit: '50',
     })
     fetch(`/api/now/table/${RECIPE_TABLE}?${params}`, {
@@ -216,33 +217,6 @@ function RecipeListView() {
   const handleSaved = () => {
     setShowCreate(false)
     setListKey(k => k + 1)
-  }
-
-  // Modal style: bottom-anchored sheet on mobile (≤400px), centered overlay on desktop
-  const modalWrapperStyle = isMobile ? {
-    position: 'fixed' as const,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    top: 'auto' as const,
-    transform: 'none',
-    width: '100%',
-    maxHeight: '85vh',
-    overflowY: 'auto' as const,
-    background: 'var(--paper)',
-    border: 'none',
-    borderTop: '2px solid var(--ink)',
-    borderRadius: '12px 12px 0 0',
-    boxShadow: '0 -4px 24px rgba(0,0,0,.15)',
-  } : {
-    position: 'absolute' as const,
-    left: '50%',
-    top: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 580,
-    background: 'var(--paper)',
-    boxShadow: '6px 8px 0 rgba(0,0,0,.15)',
-    border: '2px solid var(--ink)',
   }
 
   const renderContent = () => {
@@ -306,10 +280,11 @@ function RecipeListView() {
       {renderContent()}
 
       <Modal
+        size="lg"
         opened={showCreate}
         onOpenedSet={(e: CustomEvent) => { if (!e.detail?.value) setShowCreate(false) }}
       >
-        <div style={modalWrapperStyle}>
+        <div style={{ width: '100%', maxHeight: '70vh', overflowY: 'auto' }}>
           <h2 style={modalHeadingStyle}>New Preset</h2>
           <RecordProvider
             table={RECIPE_TABLE}
