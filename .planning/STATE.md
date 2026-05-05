@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: ready
-last_updated: "2026-05-01T00:00:00.000Z"
-last_activity: 2026-05-01 — Phase 3 planned, 4 plans ready to execute
+last_updated: "2026-05-05T00:00:00.000Z"
+last_activity: 2026-05-05 — Phase 3 complete, UAT approved, all 4 plans done
 progress:
   total_phases: 6
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 15
-  completed_plans: 13
-  percent: 40
+  completed_plans: 15
+  percent: 50
 ---
 
 # Project State
@@ -20,16 +20,27 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** Log a complete brew in under 60 seconds from the counter, so every session gets captured and nothing is lost.
-**Current focus:** Phase 3 — Recipe Presets
+**Current focus:** Phase 4 — Brew Log Core
 
 ## Current Position
 
-Phase: 3 of 6 (Recipe Presets)
-Plan: 3 of 4 in current phase
-Status: In progress — Phase 3 plans 01-03 complete (recipe schema + ACLs + list view + create modal + detail/edit/archive + CatalogView wiring + deploy), plan 04 remaining
-Last activity: 2026-05-05 — Phase 3 plan 03 executed; RecipeDetailView full implementation deployed to instance
+Phase: 4 of 6 (Brew Log Core)
+Plan: 0 of TBD in current phase
+Status: Ready — Phase 3 complete, Phase 4 not yet planned
+Last activity: 2026-05-05 — Phase 3 UAT approved; all 4 plans complete
 
-Progress: [████░░░░░░] 40%
+Progress: [█████░░░░░] 50%
+
+## Phase 3 — Complete (2026-05-05)
+
+All 4 plans executed and UAT approved. RECIPE-02 verified with non-admin aibrew_user account.
+
+Lessons from Phase 3 UAT:
+- `sysparm_display_value: 'all'` required in Table API list fetches when using `display()`/`value()` field helpers — without it, helpers return empty strings (fields are plain strings, not `{value, display_value}` objects)
+- `@servicenow/react-components Button` ignores `display: flex; flex-direction: column` on `style` prop — use native `<button display: block>` for custom card layouts (BeanCard is the canonical pattern)
+- `Modal size="lg"` + `overflowY: auto` inner div is the correct create-form pattern; custom `position: absolute` inside `<Modal>` conflicts with the component's own positioning
+
+Code review open items (03-REVIEW.md): pending — run /gsd-code-review 3 after phase.
 
 ## Phase 1 — Complete (2026-04-30)
 

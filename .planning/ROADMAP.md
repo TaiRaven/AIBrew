@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: App Foundation** - SDK init, scoped app, ACLs, navigator, roaster and equipment catalogs (Complete 2026-04-30)
 - [x] **Phase 2: Bean Catalog & Inventory** - Bean type records, purchase ledger, computed stock, low-stock badge (Complete 2026-05-01)
-- [ ] **Phase 3: Recipe Presets** - Recipe table, preset list UI, save-from-brew action
+- [x] **Phase 3: Recipe Presets** - Recipe table, preset list UI, save-from-brew action (Complete 2026-05-05)
 - [ ] **Phase 4: Brew Log Core** - BrewLog table, brew logging form with timer, presets, ratio, rating, mobile layout
 - [ ] **Phase 5: Brew History & Management** - Brew history list, edit and delete on past brews
 - [ ] **Phase 6: Analytics** - Scripted REST aggregations, rating trend, avg by bean, avg by method
@@ -73,7 +73,7 @@ Plans:
 - [x] 03-01-PLAN.md — Fluent artifacts: recipe table, 4 ACLs, index.now.ts exports, deploy
 - [x] 03-02-PLAN.md — RecipeSection.tsx list view: card grid, create modal
 - [x] 03-03-PLAN.md — RecipeSection.tsx detail/edit/archive + CatalogView wiring, deploy
-- [ ] 03-04-PLAN.md — Human UAT: verify all RECIPE-02 criteria with non-admin test user
+- [x] 03-04-PLAN.md — Human UAT: verify all RECIPE-02 criteria with non-admin test user
 **UI hint**: yes
 
 ### Phase 4: Brew Log Core
