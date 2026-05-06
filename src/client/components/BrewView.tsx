@@ -251,6 +251,70 @@ export default function BrewView({ params }: { params: URLSearchParams }) {
     ? `1:${(waterG / doseG).toFixed(1)}`
     : null
 
+  // ── Submit handler (BREW-01 / D-19) ─────────────────────────────────────────
+  const handleSubmit = async () => {
+    // Required field validation — method and bean are minimum (Claude's Discretion)
+    if (!method) { setError('Select a brew method.'); return }
+    if (!beanSysId) { setError('Select a bean.'); return }
+
+    // CSRF guard — platform-managed session token (ASVS L1 V3 Session Management)
+    const g_ck = (window as any).g_ck
+    if (!g_ck) { setError('Session token not available — please reload.'); return }
+
+    setSubmitting(true)
+    setError('')
+
+    try {
+      // Build POST body — send null for optional fields that are empty
+      // grind_size and brew_time_seconds MUST be integer or null (IntegerColumn)
+      // rating MUST be integer 1-10 or null (IntegerColumn with min:1 max:10)
+      // taste_notes: trimmed string or null (StringColumn)
+      // recipe: selectedPresetSysId if user picked a preset, null if "Use last" or blank
+      const body: Record<string, unknown> = {
+        method,
+        bean:              beanSysId,
+        dose_weight_g:     typeof doseG === 'number' ? doseG : null,
+        water_weight_g:    typeof waterG === 'number' ? waterG : null,
+        grind_size:        typeof grindSize === 'number' ? grindSize : null,
+        brew_time_seconds: elapsed > 0 ? elapsed : null,
+        rating:            rating || null,
+        taste_notes:       tasteNotes.trim() || null,
+        equipment:         equipmentSysId || null,
+        recipe:            selectedPresetSysId || null,    // null when "Use last" — per D-09
+      }
+
+      const res = await fetch(`/api/now/table/${BREW_LOG_TABLE}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-UserToken': g_ck,               // CSRF protection — required on all mutating fetches
+        },
+        body: JSON.stringify(body),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const data = await res.json()
+
+      // Capture submitted brew for save-as-preset (RECIPE-01 — used in 04-05)
+      setSubmittedBrew({
+        method,
+        equipment: equipmentSysId,
+        equipmentName,
+        dose_weight_g: typeof doseG === 'number' ? doseG : null,
+        water_weight_g: typeof waterG === 'number' ? waterG : null,
+        grind_size: typeof grindSize === 'number' ? grindSize : null,
+        // bean and taste_notes NOT stored in submittedBrew — excluded from preset per D-17
+      })
+
+      setListKey(k => k + 1)        // Phase 5 history refresh hook
+      setShowConfirmation(true)     // Show post-submit banner (D-16) — does NOT navigate away
+
+    } catch {
+      setError("Couldn't save brew — try again.")
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <div style={{ padding: 'var(--sp-md)', paddingBottom: 'var(--sp-xl)', maxWidth: '480px', margin: '0 auto' }}>
 
