@@ -271,12 +271,15 @@ export default function BrewView({ params }: { params: URLSearchParams }) {
   // Does NOT set selectedPresetSysId — "Use last" is not a preset selection (D-09)
   const applyLastBrew = () => {
     if (!lastBrew) return
-    setMethod(value(lastBrew.method) || '')
+    // Scalar fields (decimal/integer) may come back as plain strings rather than
+    // {value, display_value} objects — use the same typeof guard as the bean field
+    const raw = (f: any) => (typeof f === 'object' ? value(f) : String(f ?? ''))
+    setMethod(raw(lastBrew.method))
     const beanId = typeof lastBrew.bean === 'object' ? value(lastBrew.bean) : lastBrew.bean
     if (beanId) setBeanSysId(beanId)
-    setDoseG(parseFloat(value(lastBrew.dose_weight_g) || '0') || '')
-    setWaterG(parseFloat(value(lastBrew.water_weight_g) || '0') || '')
-    setGrindSize(parseInt(value(lastBrew.grind_size) || '0', 10) || '')
+    setDoseG(parseFloat(raw(lastBrew.dose_weight_g)) || '')
+    setWaterG(parseFloat(raw(lastBrew.water_weight_g)) || '')
+    setGrindSize(parseInt(raw(lastBrew.grind_size), 10) || '')
     // selectedPresetSysId remains '' — Use last is NOT a preset
   }
 
