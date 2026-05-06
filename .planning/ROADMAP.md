@@ -88,8 +88,8 @@ Plans:
   5. User can add a 1–10 rating and free-text taste notes before submitting
 **Plans**: 5 plans
 Plans:
-- [ ] 04-01-PLAN.md — Fluent artifacts: brew_log table + ACLs + deploy
-- [ ] 04-02-PLAN.md — Navigation wiring: BrewView scaffold + app.tsx + TopNav + HomeView
+- [x] 04-01-PLAN.md — Fluent artifacts: brew_log table + ACLs + deploy
+- [x] 04-02-PLAN.md — Navigation wiring: BrewView scaffold + app.tsx + TopNav + HomeView
 - [ ] 04-03-PLAN.md — Form core: method chips, bean picker, dose/water/ratio, grind size, timer
 - [ ] 04-04-PLAN.md — Below-fold fields + submit handler + confirmation banner
 - [ ] 04-05-PLAN.md — RECIPE-01 save-as-preset modal + full phase UAT
@@ -127,6 +127,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. App Foundation | 6/6 | Complete | 2026-04-30 |
 | 2. Bean Catalog & Inventory | 5/5 | Complete | 2026-05-01 |
 | 3. Recipe Presets | 4/4 | Complete | 2026-05-05 |
-| 4. Brew Log Core | 0/TBD | Not started | - |
+| 4. Brew Log Core | 2/5 | In Progress | - |
 | 5. Brew History & Management | 0/TBD | Not started | - |
 | 6. Analytics | 0/TBD | Not started | - |
