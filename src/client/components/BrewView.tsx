@@ -252,8 +252,269 @@ export default function BrewView({ params }: { params: URLSearchParams }) {
     : null
 
   return (
-    <div style={{ padding: 'var(--sp-md)' }}>
-      {/* Form UI — implemented in task 04-03-02 */}
+    <div style={{ padding: 'var(--sp-md)', paddingBottom: 'var(--sp-xl)', maxWidth: '480px', margin: '0 auto' }}>
+
+      {/* ── Confirmation banner (BREW-01 post-submit — D-16) ── rendered in 04-04 */}
+
+      {!showConfirmation && (
+        <>
+          {/* ── Error display ─────────────────────────────────────────────── */}
+          {error && (
+            <div style={{ color: 'var(--aibrew-destructive)', fontFamily: 'var(--aibrew-font-body)', fontSize: '16px', marginBottom: 'var(--sp-sm)' }}>
+              {error}
+            </div>
+          )}
+
+          {/* ── Preset strip (D-05, D-07) — above method chips, outside 6-field budget ── */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: 'var(--sp-sm)', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '18px' }}>📎</span>
+            {selectedPreset ? (
+              <>
+                <span style={{ fontFamily: 'var(--aibrew-font-body)', fontSize: '14px', color: 'var(--aibrew-ink)' }}>
+                  Using: {display(selectedPreset.name) || value(selectedPreset.name) || 'Preset'}
+                </span>
+                <button
+                  onClick={() => { setSelectedPreset(null); setSelectedPresetSysId(''); }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--aibrew-ink-3)', fontSize: '16px', padding: '0 4px' }}
+                  aria-label="Clear preset"
+                >
+                  ×
+                </button>
+              </>
+            ) : (
+              <span style={{ fontFamily: 'var(--aibrew-font-body)', fontSize: '14px', color: 'var(--aibrew-ink-3)' }}>
+                No preset
+              </span>
+            )}
+            {presets.length > 0 && (
+              <button
+                onClick={() => setPresetExpanded(e => !e)}
+                style={{ background: 'none', border: '1px solid var(--aibrew-ink-4)', borderRadius: '4px', cursor: 'pointer', fontFamily: 'var(--aibrew-font-body)', fontSize: '13px', padding: '4px 8px', color: 'var(--aibrew-ink)' }}
+              >
+                {presetExpanded ? '▴ Hide' : '▾ Pick one'}
+              </button>
+            )}
+            {/* "Use last" — hidden if no brew records exist (D-08) */}
+            {lastBrewAvailable && (
+              <button
+                onClick={applyLastBrew}
+                style={{ background: 'none', border: '1px solid var(--aibrew-ink-4)', borderRadius: '4px', cursor: 'pointer', fontFamily: 'var(--aibrew-font-body)', fontSize: '13px', padding: '4px 8px', color: 'var(--aibrew-ink)' }}
+              >
+                Use last
+              </button>
+            )}
+          </div>
+
+          {/* Preset expanded list */}
+          {presetExpanded && presets.length > 0 && (
+            <div style={{ marginBottom: 'var(--sp-sm)', maxHeight: '180px', overflowY: 'auto', border: '1px solid var(--aibrew-ink-4)', borderRadius: '4px' }}>
+              {presets.map(p => {
+                const pid = typeof p.sys_id === 'object' ? value(p.sys_id) : p.sys_id
+                const pName = display(p.name) || value(p.name) || 'Untitled'
+                const pMethod = value(p.method) || ''
+                const pDose = value(p.dose_weight_g) || ''
+                const pWater = value(p.water_weight_g) || ''
+                const pRatio = (parseFloat(pDose) > 0 && parseFloat(pWater) > 0)
+                  ? `1:${(parseFloat(pWater) / parseFloat(pDose)).toFixed(1)}`
+                  : null
+                return (
+                  <button
+                    key={pid}
+                    onClick={() => applyPreset(p)}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      textAlign: 'left',
+                      padding: '10px var(--sp-sm)',
+                      background: 'transparent',
+                      border: 'none',
+                      borderBottom: '1px solid var(--aibrew-ink-4)',
+                      cursor: 'pointer',
+                      fontFamily: 'var(--aibrew-font-body)',
+                    }}
+                  >
+                    <div style={{ fontWeight: 600, fontSize: '15px', color: 'var(--aibrew-ink)' }}>{pName}</div>
+                    <div style={{ fontSize: '13px', color: 'var(--aibrew-ink-3)' }}>
+                      {pMethod}{pRatio ? ` · ${pDose}g • ${pWater}g ${pRatio}` : ''}
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          )}
+
+          {/* ── (1) Method chip row (D-06) — 7 choices, horizontal scroll ── */}
+          <div style={{ marginBottom: 'var(--sp-md)' }}>
+            <span style={labelStyle}>Method</span>
+            {/* Native <button> required — @servicenow/react-components Button ignores flex-direction column (Phase 3 lesson) */}
+            <div style={{ display: 'flex', overflowX: 'auto', gap: '8px', padding: '4px 0', WebkitOverflowScrolling: 'touch' }}>
+              {METHOD_CHOICES.map(m => (
+                <button
+                  key={m.value}
+                  onClick={() => setMethod(method === m.value ? '' : m.value)}
+                  style={{
+                    flexShrink: 0,
+                    padding: '6px 14px',
+                    borderRadius: '16px',
+                    border: method === m.value
+                      ? '2px solid var(--aibrew-accent)'
+                      : '2px solid var(--aibrew-ink-4)',
+                    background: method === m.value ? 'var(--aibrew-accent)' : 'transparent',
+                    color: method === m.value ? '#fff' : 'var(--aibrew-ink)',
+                    fontFamily: 'var(--aibrew-font-body)',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    minHeight: '44px',
+                  }}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* ── (2) Bean picker (D-03 / BREW-05) ── */}
+          <div style={{ marginBottom: 'var(--sp-md)' }}>
+            <label style={labelStyle}>Bean</label>
+            <select
+              value={beanSysId}
+              onChange={e => setBeanSysId(e.target.value)}
+              style={{ ...inputStyle }}
+            >
+              <option value="">— Select bean —</option>
+              {beans.map(b => {
+                const id = typeof b.sys_id === 'object' ? value(b.sys_id) : b.sys_id
+                const name = display(b.name) || value(b.name) || ''
+                return <option key={id} value={id}>{name}</option>
+              })}
+            </select>
+          </div>
+
+          {/* ── (3) Dose | Ratio | Water row (D-03 / BREW-06 / BREW-07) ── */}
+          <div style={{ marginBottom: 'var(--sp-md)' }}>
+            <div style={{ display: 'flex', gap: 'var(--sp-sm)', alignItems: 'flex-end' }}>
+              <div style={{ flex: 1 }}>
+                <label style={labelStyle}>Dose (g)</label>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  value={doseG}
+                  onChange={e => setDoseG(e.target.value === '' ? '' : parseFloat(e.target.value))}
+                  style={{ ...inputStyle }}
+                  placeholder="18"
+                />
+              </div>
+              {/* Live ratio — BREW-07: computed, never stored */}
+              <div style={{
+                padding: '0 var(--sp-xs)',
+                fontFamily: 'var(--aibrew-font-body)',
+                fontSize: '14px',
+                color: ratio ? 'var(--aibrew-ink)' : 'var(--aibrew-ink-4)',
+                fontWeight: 600,
+                minWidth: '60px',
+                textAlign: 'center',
+                paddingBottom: '12px',
+              }}>
+                {ratio || '1:—'}
+              </div>
+              <div style={{ flex: 1 }}>
+                <label style={labelStyle}>Water (g)</label>
+                <input
+                  type="number"
+                  min="0"
+                  step="1"
+                  value={waterG}
+                  onChange={e => setWaterG(e.target.value === '' ? '' : parseFloat(e.target.value))}
+                  style={{ ...inputStyle }}
+                  placeholder="300"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* ── (4) Grind size (D-03 / BREW-06) — IntegerColumn; equipment sub-label ── */}
+          <div style={{ marginBottom: 'var(--sp-md)' }}>
+            <label style={labelStyle}>
+              Grind{equipmentName ? ` (${equipmentName})` : ''}
+            </label>
+            <input
+              type="number"
+              min="0"
+              step="1"
+              value={grindSize}
+              onChange={e => setGrindSize(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
+              style={{ ...inputStyle }}
+              placeholder="20"
+            />
+          </div>
+
+          {/* ── (5) Timer (D-12 / BREW-04) ── */}
+          <div style={{ marginBottom: 'var(--sp-md)' }}>
+            <label style={labelStyle}>Timer</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-sm)' }}>
+              {timerManual ? (
+                <input
+                  type="text"
+                  value={manualInput}
+                  onChange={e => setManualInput(e.target.value)}
+                  onBlur={() => {
+                    // Parse mm:ss or plain seconds
+                    const parts = manualInput.split(':')
+                    if (parts.length === 2) {
+                      const mins = parseInt(parts[0], 10) || 0
+                      const secs = parseInt(parts[1], 10) || 0
+                      setElapsed(mins * 60 + secs)
+                    } else {
+                      setElapsed(parseInt(manualInput, 10) || 0)
+                    }
+                    setTimerManual(false)
+                  }}
+                  style={{ ...inputStyle, width: '80px', fontVariantNumeric: 'tabular-nums', fontFamily: 'monospace', fontSize: '20px' }}
+                  autoFocus
+                  placeholder="0:00"
+                />
+              ) : (
+                <button
+                  onClick={() => { if (!running) setTimerManual(true) }}
+                  style={{
+                    background: 'none',
+                    border: '1px solid var(--aibrew-ink-4)',
+                    borderRadius: '4px',
+                    padding: '8px 16px',
+                    fontFamily: 'monospace',
+                    fontSize: '20px',
+                    fontVariantNumeric: 'tabular-nums',
+                    color: 'var(--aibrew-ink)',
+                    cursor: running ? 'default' : 'pointer',
+                    minHeight: '44px',
+                    minWidth: '80px',
+                  }}
+                  title={running ? '' : 'Tap to enter time manually'}
+                >
+                  {formatTime(elapsed)}
+                </button>
+              )}
+              {!running ? (
+                <Button onClicked={handleStart} variant="secondary" style={{ minHeight: '44px' }}>
+                  ▶ Start
+                </Button>
+              ) : (
+                <Button onClicked={handleStop} variant="secondary" style={{ minHeight: '44px' }}>
+                  ■ Stop
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* ── Below-fold fields (rating, taste notes, equipment, submit) — added in 04-04 ── */}
+          <div style={{ color: 'var(--aibrew-ink-3)', fontFamily: 'var(--aibrew-font-body)', fontSize: '14px' }}>
+            {/* Placeholder — 04-04 replaces this */}
+            Below-fold fields (rating, taste notes, equipment, save) coming in plan 04-04.
+          </div>
+        </>
+      )}
     </div>
   )
 }
