@@ -709,7 +709,7 @@ export default function BrewView({ params }: { params: URLSearchParams }) {
               <label style={labelStyle}>Rating (optional)</label>
               {/* Native <button> elements — Phase 3 lesson: Button component ignores flex-direction */}
               <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                {Array.from({ length: 10 }, (_, i) => i + 1).map(n => (
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
                   <button
                     key={n}
                     onClick={() => setRating(rating === n ? null : n)}
