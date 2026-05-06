@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: App Foundation** - SDK init, scoped app, ACLs, navigator, roaster and equipment catalogs (Complete 2026-04-30)
 - [x] **Phase 2: Bean Catalog & Inventory** - Bean type records, purchase ledger, computed stock, low-stock badge (Complete 2026-05-01)
 - [x] **Phase 3: Recipe Presets** - Recipe table, preset list UI, save-from-brew action (Complete 2026-05-05)
-- [ ] **Phase 4: Brew Log Core** - BrewLog table, brew logging form with timer, presets, ratio, rating, mobile layout
+- [x] **Phase 4: Brew Log Core** - BrewLog table, brew logging form with timer, presets, ratio, rating, mobile layout (Complete 2026-05-06)
 - [ ] **Phase 5: Brew History & Management** - Brew history list, edit and delete on past brews
 - [ ] **Phase 6: Analytics** - Scripted REST aggregations, rating trend, avg by bean, avg by method
 
@@ -92,7 +92,7 @@ Plans:
 - [x] 04-02-PLAN.md — Navigation wiring: BrewView scaffold + app.tsx + TopNav + HomeView
 - [x] 04-03-PLAN.md — Form core: method chips, bean picker, dose/water/ratio, grind size, timer
 - [x] 04-04-PLAN.md — Below-fold fields + submit handler + confirmation banner
-- [ ] 04-05-PLAN.md — RECIPE-01 save-as-preset modal + full phase UAT
+- [x] 04-05-PLAN.md — RECIPE-01 save-as-preset modal + full phase UAT
 **UI hint**: yes
 
 ### Phase 5: Brew History & Management
@@ -127,6 +127,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. App Foundation | 6/6 | Complete | 2026-04-30 |
 | 2. Bean Catalog & Inventory | 5/5 | Complete | 2026-05-01 |
 | 3. Recipe Presets | 4/4 | Complete | 2026-05-05 |
-| 4. Brew Log Core | 5/5 | UAT Pending | - |
+| 4. Brew Log Core | 5/5 | Complete | 2026-05-06 |
 | 5. Brew History & Management | 0/TBD | Not started | - |
 | 6. Analytics | 0/TBD | Not started | - |
