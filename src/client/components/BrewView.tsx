@@ -55,6 +55,67 @@ const inputStyle: React.CSSProperties = {
 const formatTime = (s: number): string =>
   `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
 
+// Inline equipment picker — fetches active equipment for manual override (D-11)
+function EquipmentPickerInline({
+  value: selectedId,
+  onChange,
+}: {
+  value: string
+  onChange: (id: string, name: string) => void
+}) {
+  const [equipment, setEquipment] = React.useState<any[]>([])
+
+  React.useEffect(() => {
+    const g_ck = (window as any).g_ck
+    const params = new URLSearchParams({
+      sysparm_query: 'active=true',
+      sysparm_fields: 'sys_id,name',
+      sysparm_display_value: 'all',
+      sysparm_limit: '50',
+    })
+    fetch(`/api/now/table/x_664529_aibrew_equipment?${params}`, {
+      headers: { Accept: 'application/json', ...(g_ck ? { 'X-UserToken': g_ck } : {}) },
+    })
+      .then(r => r.json())
+      .then(data => setEquipment(data.result || []))
+      .catch(() => setEquipment([]))
+  }, [])
+
+  return (
+    <select
+      value={selectedId}
+      onChange={e => {
+        const id = e.target.value
+        const found = equipment.find(eq => {
+          const eqId = typeof eq.sys_id === 'object' ? value(eq.sys_id) : eq.sys_id
+          return eqId === id
+        })
+        const name = found ? (display(found.name) || value(found.name) || '') : ''
+        onChange(id, name)
+      }}
+      style={{
+        width: '100%',
+        padding: '10px',
+        border: '1px solid var(--aibrew-ink-4)',
+        borderRadius: '4px',
+        fontFamily: 'var(--aibrew-font-body)',
+        fontSize: '16px',
+        minHeight: '44px',
+        boxSizing: 'border-box',
+        background: 'var(--aibrew-paper)',
+        color: 'var(--aibrew-ink)',
+      }}
+    >
+      <option value="">— None —</option>
+      {equipment.map(eq => {
+        const id = typeof eq.sys_id === 'object' ? value(eq.sys_id) : eq.sys_id
+        const name = display(eq.name) || value(eq.name) || ''
+        return <option key={id} value={id}>{name}</option>
+      })}
+    </select>
+  )
+}
+
 export default function BrewView({ params }: { params: URLSearchParams }) {
   // ── Above-fold form state ──────────────────────────────────────────────────
   const [method, setMethod]             = useState('')
@@ -318,7 +379,34 @@ export default function BrewView({ params }: { params: URLSearchParams }) {
   return (
     <div style={{ padding: 'var(--sp-md)', paddingBottom: 'var(--sp-xl)', maxWidth: '480px', margin: '0 auto' }}>
 
-      {/* ── Confirmation banner (BREW-01 post-submit — D-16) ── rendered in 04-04 */}
+      {/* ── Post-submit confirmation banner (D-16) ─────────────────────── */}
+      {showConfirmation && (
+        <div style={{
+          padding: 'var(--sp-lg)',
+          textAlign: 'center',
+          fontFamily: 'var(--aibrew-font-body)',
+        }}>
+          <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--aibrew-ink)', marginBottom: 'var(--sp-md)' }}>
+            Brew saved! ✓
+          </div>
+          <div style={{ display: 'flex', gap: 'var(--sp-sm)', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Button
+              onClicked={() => setShowSavePreset(true)}
+              variant="secondary"
+              style={{ minHeight: '44px' }}
+            >
+              Save as preset
+            </Button>
+            <Button
+              onClicked={resetForm}
+              variant="primary"
+              style={{ minHeight: '44px' }}
+            >
+              Done
+            </Button>
+          </div>
+        </div>
+      )}
 
       {!showConfirmation && (
         <>
@@ -572,10 +660,86 @@ export default function BrewView({ params }: { params: URLSearchParams }) {
             </div>
           </div>
 
-          {/* ── Below-fold fields (rating, taste notes, equipment, submit) — added in 04-04 ── */}
-          <div style={{ color: 'var(--aibrew-ink-3)', fontFamily: 'var(--aibrew-font-body)', fontSize: '14px' }}>
-            {/* Placeholder — 04-04 replaces this */}
-            Below-fold fields (rating, taste notes, equipment, save) coming in plan 04-04.
+          {/* ── (6+) Below-fold: rating, taste notes, equipment, submit ── */}
+          {/* Fold line — above content scrolls into view, below content requires scroll on phone */}
+          <div style={{ borderTop: '1px solid var(--aibrew-ink-4)', paddingTop: 'var(--sp-md)', marginTop: 'var(--sp-md)' }}>
+
+            {/* Rating widget (D-15 / BREW-08) — 10 tap targets, optional */}
+            <div style={{ marginBottom: 'var(--sp-md)' }}>
+              <label style={labelStyle}>Rating (optional)</label>
+              {/* Native <button> elements — Phase 3 lesson: Button component ignores flex-direction */}
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                {Array.from({ length: 10 }, (_, i) => i + 1).map(n => (
+                  <button
+                    key={n}
+                    onClick={() => setRating(rating === n ? null : n)}
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      border: rating === n
+                        ? '2px solid var(--aibrew-accent)'
+                        : '2px solid var(--aibrew-ink-4)',
+                      background: rating === n ? 'var(--aibrew-accent)' : 'transparent',
+                      color: rating === n ? '#fff' : 'var(--aibrew-ink)',
+                      fontFamily: 'var(--aibrew-font-body)',
+                      fontSize: '15px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Taste notes (D-04 / BREW-09) */}
+            <div style={{ marginBottom: 'var(--sp-md)' }}>
+              <label style={labelStyle}>Taste notes (optional)</label>
+              <textarea
+                value={tasteNotes}
+                onChange={e => setTasteNotes(e.target.value)}
+                rows={3}
+                maxLength={500}
+                placeholder="Bright, fruity, clean finish…"
+                style={{
+                  width: '100%',
+                  padding: '10px',
+                  border: '1px solid var(--aibrew-ink-4)',
+                  borderRadius: '4px',
+                  fontFamily: 'var(--aibrew-font-body)',
+                  fontSize: '16px',
+                  resize: 'vertical',
+                  boxSizing: 'border-box',
+                  background: 'var(--aibrew-paper)',
+                  color: 'var(--aibrew-ink)',
+                }}
+              />
+            </div>
+
+            {/* Equipment picker (D-11) — pre-filled by preset, manual override allowed */}
+            <div style={{ marginBottom: 'var(--sp-md)' }}>
+              <label style={labelStyle}>Equipment (optional)</label>
+              <EquipmentPickerInline
+                value={equipmentSysId}
+                onChange={(id, name) => { setEquipmentSysId(id); setEquipmentName(name) }}
+              />
+            </div>
+
+            {/* Save Brew button (BREW-01 / D-04) — accent, full-width, 44px tap target */}
+            <Button
+              onClicked={handleSubmit}
+              variant="primary"
+              style={{
+                width: '100%',
+                minHeight: '44px',
+                opacity: submitting ? 0.6 : 1,
+                pointerEvents: submitting ? 'none' : 'auto',
+              }}
+            >
+              {submitting ? 'Saving…' : 'Save Brew'}
+            </Button>
           </div>
         </>
       )}
