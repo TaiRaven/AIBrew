@@ -4,7 +4,7 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 last_updated: "2026-05-06T09:00:00.000Z"
-last_activity: 2026-05-06 — Wave 1 complete (04-01: brew_log table+ACLs deployed; 04-02: navigation wiring deployed); Wave 2 starting
+last_activity: 2026-05-06 — Wave 2 complete (04-03: above-fold form deployed — method chips, bean picker, ratio, grind, timer); Wave 3 starting
 progress:
   total_phases: 6
   completed_phases: 2
@@ -25,7 +25,7 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 4 of 6 (Brew Log Core)
-Plan: 2 of 5 in current phase
+Plan: 3 of 5 in current phase
 Status: Ready to execute — 5 plans created, verification passed
 Last activity: 2026-05-06 — Phase 4 planning complete; 5 plans created and verified
 
