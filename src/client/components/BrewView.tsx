@@ -376,6 +376,46 @@ export default function BrewView({ params }: { params: URLSearchParams }) {
     }
   }
 
+  // ── Save-as-preset handler (RECIPE-01 / D-17) ────────────────────────────
+  // POST body includes ONLY: name, method, equipment, dose_weight_g, water_weight_g, grind_size, active
+  // NEVER includes: bean (presets are bean-agnostic per Phase 3 D-01), taste_notes (brew-specific)
+  const handleSaveAsPreset = async () => {
+    if (!presetName.trim()) {
+      setPresetNameError('Preset name is required.')
+      return
+    }
+    const g_ck = (window as any).g_ck
+    if (!g_ck) return
+
+    setPresetNameError('')
+    try {
+      const body = {
+        name:           presetName.trim(),
+        method:         submittedBrew?.method || null,
+        equipment:      submittedBrew?.equipment || null,
+        dose_weight_g:  submittedBrew?.dose_weight_g ?? null,
+        water_weight_g: submittedBrew?.water_weight_g ?? null,
+        grind_size:     submittedBrew?.grind_size ?? null,
+        active:         true,
+        // bean: intentionally omitted — presets are bean-agnostic (Phase 3 D-01)
+        // taste_notes: intentionally omitted — brew-specific, not preset configuration (D-17)
+      }
+      const res = await fetch(`/api/now/table/${RECIPE_TABLE}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-UserToken': g_ck,
+        },
+        body: JSON.stringify(body),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      setShowSavePreset(false)
+      resetForm()              // D-18: reset to blank form after saving preset
+    } catch {
+      setPresetNameError("Couldn't save preset — try again.")
+    }
+  }
+
   return (
     <div style={{ padding: 'var(--sp-md)', paddingBottom: 'var(--sp-xl)', maxWidth: '480px', margin: '0 auto' }}>
 
@@ -743,6 +783,64 @@ export default function BrewView({ params }: { params: URLSearchParams }) {
           </div>
         </>
       )}
+
+      {/* ── RECIPE-01 Save-as-preset Modal (D-17) ───────────────────────── */}
+      <Modal
+        size="lg"
+        opened={showSavePreset}
+        onOpenedSet={(e: CustomEvent) => {
+          if (!e.detail?.value) setShowSavePreset(false)
+        }}
+      >
+        <div style={{ width: '100%', maxHeight: '70vh', overflowY: 'auto', padding: 'var(--sp-sm)' }}>
+          <h2 style={{ fontFamily: 'var(--aibrew-font-disp)', fontSize: '20px', fontWeight: 600, color: 'var(--aibrew-ink)', margin: '0 0 var(--sp-md) 0' }}>
+            Save as Preset
+          </h2>
+          <div style={{ marginBottom: 'var(--sp-md)' }}>
+            <label style={labelStyle}>Preset name</label>
+            <input
+              type="text"
+              value={presetName}
+              onChange={e => { setPresetName(e.target.value); setPresetNameError('') }}
+              maxLength={100}
+              placeholder="My V60 recipe"
+              style={{ ...inputStyle }}
+              autoFocus
+            />
+            {presetNameError && (
+              <div style={{ color: 'var(--aibrew-destructive)', fontFamily: 'var(--aibrew-font-body)', fontSize: '14px', marginTop: '4px' }}>
+                {presetNameError}
+              </div>
+            )}
+          </div>
+          <div style={{ background: 'var(--aibrew-paper-2)', borderRadius: '4px', padding: 'var(--sp-sm)', marginBottom: 'var(--sp-md)', fontFamily: 'var(--aibrew-font-body)', fontSize: '14px', color: 'var(--aibrew-ink-3)' }}>
+            <div style={{ marginBottom: '4px' }}>
+              <strong style={{ color: 'var(--aibrew-ink)' }}>Method: </strong>
+              {METHOD_CHOICES.find(m => m.value === submittedBrew?.method)?.label || submittedBrew?.method || '—'}
+            </div>
+            {submittedBrew?.equipmentName && (
+              <div style={{ marginBottom: '4px' }}><strong style={{ color: 'var(--aibrew-ink)' }}>Equipment: </strong>{submittedBrew.equipmentName}</div>
+            )}
+            {submittedBrew?.dose_weight_g != null && (
+              <div style={{ marginBottom: '4px' }}><strong style={{ color: 'var(--aibrew-ink)' }}>Dose: </strong>{submittedBrew.dose_weight_g}g</div>
+            )}
+            {submittedBrew?.water_weight_g != null && (
+              <div style={{ marginBottom: '4px' }}><strong style={{ color: 'var(--aibrew-ink)' }}>Water: </strong>{submittedBrew.water_weight_g}g</div>
+            )}
+            {submittedBrew?.grind_size != null && (
+              <div><strong style={{ color: 'var(--aibrew-ink)' }}>Grind: </strong>{submittedBrew.grind_size}</div>
+            )}
+          </div>
+          <div style={{ display: 'flex', gap: 'var(--sp-sm)', justifyContent: 'flex-end' }}>
+            <Button onClicked={() => { setShowSavePreset(false); setPresetName(''); setPresetNameError('') }} variant="secondary" style={{ minHeight: '44px' }}>
+              Cancel
+            </Button>
+            <Button onClicked={handleSaveAsPreset} variant="primary" style={{ minHeight: '44px' }}>
+              Save preset
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }
