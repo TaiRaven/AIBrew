@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import TopNav from './components/TopNav'
 import HomeView from './components/HomeView'
 import CatalogView from './components/CatalogView'
+import BrewView from './components/BrewView'
 import { getViewParams, navigateToView } from './utils/navigate'
 
 function getActiveTab(params: URLSearchParams): string {
@@ -66,6 +67,7 @@ export default function App() {
       case 'catalog':
         return <CatalogView params={params} />
       case 'brew':
+        return <BrewView params={params} />
       case 'history':
       case 'analytics':
         return <DisabledView view={view} />
