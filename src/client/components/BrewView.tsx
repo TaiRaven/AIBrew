@@ -390,13 +390,13 @@ export default function BrewView({ params }: { params: URLSearchParams }) {
     setPresetNameError('')
     try {
       const body = {
-        name:           presetName.trim(),
-        method:         submittedBrew?.method || null,
-        equipment:      submittedBrew?.equipment || null,
-        dose_weight_g:  submittedBrew?.dose_weight_g ?? null,
+        name:          presetName.trim(),
+        method:        submittedBrew?.method || null,
+        equipment:     submittedBrew?.equipment || null,
+        dose_weight_g: submittedBrew?.dose_weight_g ?? null,
         water_weight_g: submittedBrew?.water_weight_g ?? null,
-        grind_size:     submittedBrew?.grind_size ?? null,
-        active:         true,
+        grind_size:    submittedBrew?.grind_size ?? null,
+        active:        true,
         // bean: intentionally omitted — presets are bean-agnostic (Phase 3 D-01)
         // taste_notes: intentionally omitted — brew-specific, not preset configuration (D-17)
       }
@@ -793,9 +793,17 @@ export default function BrewView({ params }: { params: URLSearchParams }) {
         }}
       >
         <div style={{ width: '100%', maxHeight: '70vh', overflowY: 'auto', padding: 'var(--sp-sm)' }}>
-          <h2 style={{ fontFamily: 'var(--aibrew-font-disp)', fontSize: '20px', fontWeight: 600, color: 'var(--aibrew-ink)', margin: '0 0 var(--sp-md) 0' }}>
+          <h2 style={{
+            fontFamily: 'var(--aibrew-font-disp)',
+            fontSize: '20px',
+            fontWeight: 600,
+            color: 'var(--aibrew-ink)',
+            margin: '0 0 var(--sp-md) 0',
+          }}>
             Save as Preset
           </h2>
+
+          {/* Required name input */}
           <div style={{ marginBottom: 'var(--sp-md)' }}>
             <label style={labelStyle}>Preset name</label>
             <input
@@ -813,29 +821,61 @@ export default function BrewView({ params }: { params: URLSearchParams }) {
               </div>
             )}
           </div>
-          <div style={{ background: 'var(--aibrew-paper-2)', borderRadius: '4px', padding: 'var(--sp-sm)', marginBottom: 'var(--sp-md)', fontFamily: 'var(--aibrew-font-body)', fontSize: '14px', color: 'var(--aibrew-ink-3)' }}>
+
+          {/* Read-only field summary (D-17) — method, equipment, dose, water, grind only */}
+          {/* Bean and taste_notes are explicitly excluded */}
+          <div style={{
+            background: 'var(--aibrew-paper-2)',
+            borderRadius: '4px',
+            padding: 'var(--sp-sm)',
+            marginBottom: 'var(--sp-md)',
+            fontFamily: 'var(--aibrew-font-body)',
+            fontSize: '14px',
+            color: 'var(--aibrew-ink-3)',
+          }}>
             <div style={{ marginBottom: '4px' }}>
               <strong style={{ color: 'var(--aibrew-ink)' }}>Method: </strong>
               {METHOD_CHOICES.find(m => m.value === submittedBrew?.method)?.label || submittedBrew?.method || '—'}
             </div>
             {submittedBrew?.equipmentName && (
-              <div style={{ marginBottom: '4px' }}><strong style={{ color: 'var(--aibrew-ink)' }}>Equipment: </strong>{submittedBrew.equipmentName}</div>
+              <div style={{ marginBottom: '4px' }}>
+                <strong style={{ color: 'var(--aibrew-ink)' }}>Equipment: </strong>
+                {submittedBrew.equipmentName}
+              </div>
             )}
             {submittedBrew?.dose_weight_g != null && (
-              <div style={{ marginBottom: '4px' }}><strong style={{ color: 'var(--aibrew-ink)' }}>Dose: </strong>{submittedBrew.dose_weight_g}g</div>
+              <div style={{ marginBottom: '4px' }}>
+                <strong style={{ color: 'var(--aibrew-ink)' }}>Dose: </strong>
+                {submittedBrew.dose_weight_g}g
+              </div>
             )}
             {submittedBrew?.water_weight_g != null && (
-              <div style={{ marginBottom: '4px' }}><strong style={{ color: 'var(--aibrew-ink)' }}>Water: </strong>{submittedBrew.water_weight_g}g</div>
+              <div style={{ marginBottom: '4px' }}>
+                <strong style={{ color: 'var(--aibrew-ink)' }}>Water: </strong>
+                {submittedBrew.water_weight_g}g
+              </div>
             )}
             {submittedBrew?.grind_size != null && (
-              <div><strong style={{ color: 'var(--aibrew-ink)' }}>Grind: </strong>{submittedBrew.grind_size}</div>
+              <div>
+                <strong style={{ color: 'var(--aibrew-ink)' }}>Grind: </strong>
+                {submittedBrew.grind_size}
+              </div>
             )}
           </div>
+
           <div style={{ display: 'flex', gap: 'var(--sp-sm)', justifyContent: 'flex-end' }}>
-            <Button onClicked={() => { setShowSavePreset(false); setPresetName(''); setPresetNameError('') }} variant="secondary" style={{ minHeight: '44px' }}>
+            <Button
+              onClicked={() => { setShowSavePreset(false); setPresetName(''); setPresetNameError('') }}
+              variant="secondary"
+              style={{ minHeight: '44px' }}
+            >
               Cancel
             </Button>
-            <Button onClicked={handleSaveAsPreset} variant="primary" style={{ minHeight: '44px' }}>
+            <Button
+              onClicked={handleSaveAsPreset}
+              variant="primary"
+              style={{ minHeight: '44px' }}
+            >
               Save preset
             </Button>
           </div>

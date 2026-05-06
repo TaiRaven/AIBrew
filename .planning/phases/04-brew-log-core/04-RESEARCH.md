@@ -838,7 +838,7 @@ Step 2.6 skipped — this phase has no new external service dependencies. All de
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **`display` field on brew_log table — `sys_created_on` vs. a computed display value**
    - What we know: `display` on Table config controls what shows in reference fields elsewhere. `recipe.now.ts` uses `display: 'name'`; `bean-purchase.now.ts` uses `display: 'bean'`.

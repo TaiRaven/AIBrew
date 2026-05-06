@@ -127,6 +127,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. App Foundation | 6/6 | Complete | 2026-04-30 |
 | 2. Bean Catalog & Inventory | 5/5 | Complete | 2026-05-01 |
 | 3. Recipe Presets | 4/4 | Complete | 2026-05-05 |
-| 4. Brew Log Core | 4/5 | In Progress | - |
+| 4. Brew Log Core | 5/5 | UAT Pending | - |
 | 5. Brew History & Management | 0/TBD | Not started | - |
 | 6. Analytics | 0/TBD | Not started | - |

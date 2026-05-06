@@ -10,6 +10,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Planning docs: `.planning/` — read `ROADMAP.md` and `STATE.md` for current progress.
 
+UI designs: `design/` — all mockups and design references live here. Consult before implementing any UI work.
+
 ## Key Constraints
 
 - All code is scoped — never suggest global-scope solutions.
