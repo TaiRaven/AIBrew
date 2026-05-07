@@ -17,15 +17,13 @@ export function process(request: any, response: any) {
       totalPurchased = parseInt(purchaseAgg.getAggregate('SUM', 'grams') || '0', 10)
     }
 
-    // Phase 4+: subtract brew depletions
-    // const brewAgg = new GlideAggregate('x_664529_aibrew_brew_log')
-    // brewAgg.addAggregate('SUM', 'dose_weight_g')
-    // brewAgg.addEncodedQuery('bean=' + beanSysId)
-    // brewAgg.query()
-    // const totalUsed = brewAgg.next()
-    //   ? parseInt(brewAgg.getAggregate('SUM', 'dose_weight_g') || '0', 10)
-    //   : 0
-    const totalUsed = 0
+    const brewAgg = new GlideAggregate('x_664529_aibrew_brew_log')
+    brewAgg.addAggregate('SUM', 'dose_weight_g')
+    brewAgg.addEncodedQuery('bean=' + beanSysId)
+    brewAgg.query()
+    const totalUsed = brewAgg.next()
+      ? parseFloat(brewAgg.getAggregate('SUM', 'dose_weight_g') || '0')
+      : 0
 
     response.setBody({
       remaining_g: totalPurchased - totalUsed,
