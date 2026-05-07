@@ -4,7 +4,7 @@ milestone: v1.0
 milestone_name: milestone
 status: active
 last_updated: "2026-05-07T14:00:00.000Z"
-last_activity: 2026-05-07 — Phase 6 context gathered; ready for planning
+last_activity: 2026-05-07 — Phase 6 UI-SPEC approved; ready for planning
 progress:
   total_phases: 6
   completed_phases: 5
@@ -20,14 +20,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** Log a complete brew in under 60 seconds from the counter, so every session gets captured and nothing is lost.
-**Current focus:** Phase 6 — Analytics (context gathered, ready for planning)
+**Current focus:** Phase 6 — Analytics (UI-SPEC approved, ready for planning)
 
 ## Current Position
 
 Phase: 6 of 6 (Analytics — Context gathered)
 Plan: 0 of TBD
-Status: Context captured; ready to plan Phase 6
-Last activity: 2026-05-07 — Phase 6 context gathered; see .planning/phases/06-analytics/06-CONTEXT.md
+Status: UI-SPEC approved; ready to plan Phase 6
+Last activity: 2026-05-07 — Phase 6 UI-SPEC approved; see .planning/phases/06-analytics/06-UI-SPEC.md
 
 Progress: [████████░░] 83%
 
