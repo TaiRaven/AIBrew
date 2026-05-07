@@ -16,7 +16,7 @@
 - [ ] **BREW-07**: User sees brew ratio (water ÷ dose) calculated and displayed live on the logging form — not stored as a field
 - [ ] **BREW-08**: User can rate a brew on a 1–10 scale when logging
 - [ ] **BREW-09**: User can add free-text taste notes to a brew log entry
-- [ ] **BREW-10**: User can edit a previously logged brew session
+- [x] **BREW-10**: User can edit a previously logged brew session
 - [ ] **BREW-11**: User can delete a previously logged brew session
 
 ### Recipe Presets
@@ -134,7 +134,7 @@
 | BREW-08 | Phase 4 | Pending |
 | BREW-09 | Phase 4 | Pending |
 | PLAT-03 | Phase 4 | Pending |
-| BREW-10 | Phase 5 | Pending |
+| BREW-10 | Phase 5 | Complete |
 | BREW-11 | Phase 5 | Pending |
 | RPT-01 | Phase 5 | Pending |
 | RPT-02 | Phase 6 | Pending |

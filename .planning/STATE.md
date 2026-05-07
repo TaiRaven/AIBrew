@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: active
-last_updated: "2026-05-07T00:00:00.000Z"
-last_activity: 2026-05-07 — Plan 05-01 complete; HistoryView built and History tab enabled
+status: executing
+last_updated: "2026-05-07T08:47:25.863Z"
+last_activity: 2026-05-07
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 3
   total_plans: 18
-  completed_plans: 21
-  percent: 67
+  completed_plans: 22
+  percent: 100
 ---
 
 # Project State
@@ -25,11 +25,11 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 5 of 6 (Brew History & Management)
-Plan: 1 of 4 in current phase (Wave 2 next)
-Status: Executing — Wave 1 (05-01) complete; Wave 2 (05-02) next
-Last activity: 2026-05-07 — Plan 05-01 complete; HistoryView with paginated list, cards, edit modal, delete confirm committed
+Plan: 3 of 4 in current phase (Wave 3 next)
+Status: Executing — Wave 2 (05-02) complete; Wave 3 (05-03) next
+Last activity: 2026-05-07 — Plan 05-02 complete; edit modal PATCH save verified (Plan 01 delivered implementation)
 
-Progress: [██████░░░░] 58%
+Progress: [███████░░░] 67%
 
 ## Phase 3 — Complete (2026-05-05)
 
@@ -83,6 +83,12 @@ Code review open items (01-REVIEW.md):
 - Hard DELETE to Table API introduced — 204 No Content; never call res.json() on DELETE response
 - HistoryView contains both edit modal and delete confirmation modal in one file (Plans 2 & 3 add full wiring)
 - History tab enabled in TopNav and HomeView tile made active (D-14/D-15/D-16)
+
+### Decisions (Phase 5 — Plan 02)
+
+- Plan 01 over-delivered: complete edit modal wiring (handleEditSave, populateEditForm, EquipmentPickerInline, all 8 form fields) was included in commit 242b4b3, making Plan 02 a verification-only step with no code changes
+- Edit modal PATCH uses SYS_ID_RE.test guard (CR-01 pattern) and X-UserToken: g_ck header (T-05-06 mitigation)
+- recipe field intentionally omitted from PATCH body per D-08 (historical artifact, not editable)
 
 ### Pending Todos
 
