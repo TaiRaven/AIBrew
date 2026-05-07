@@ -113,7 +113,7 @@ Plans:
 - [x] 05-02-PLAN.md — Edit modal (form fields pre-population, PATCH save, listKey refresh)
 
 **Wave 3** *(blocked on Wave 2 completion)*
-- [ ] 05-03-PLAN.md — Delete flow (confirmation modal, hard DELETE, both entry points)
+- [x] 05-03-PLAN.md — Delete flow (confirmation modal, hard DELETE, both entry points)
 
 **Wave 4** *(blocked on Wave 3 completion — human UAT checkpoint)*
 - [ ] 05-04-PLAN.md — Deploy + full UAT with non-admin aibrew_user account
@@ -148,5 +148,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Bean Catalog & Inventory | 5/5 | Complete | 2026-05-01 |
 | 3. Recipe Presets | 4/4 | Complete | 2026-05-05 |
 | 4. Brew Log Core | 5/5 | Complete | 2026-05-06 |
-| 5. Brew History & Management | 2/4 | In progress | - |
+| 5. Brew History & Management | 3/4 | In progress | - |
 | 6. Analytics | 0/TBD | Not started | - |

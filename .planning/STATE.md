@@ -25,9 +25,9 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 5 of 6 (Brew History & Management)
-Plan: 3 of 4 in current phase (Wave 3 next)
-Status: Executing — Wave 2 (05-02) complete; Wave 3 (05-03) next
-Last activity: 2026-05-07 — Plan 05-02 complete; edit modal PATCH save verified (Plan 01 delivered implementation)
+Plan: 4 of 4 in current phase (Wave 4 next — UAT checkpoint)
+Status: Executing — Wave 3 (05-03) complete; Wave 4 (05-04) next
+Last activity: 2026-05-07 — Plan 05-03 complete; delete flow wired (handleDelete, confirmation modal, both entry points)
 
 Progress: [███████░░░] 67%
 
@@ -89,6 +89,13 @@ Code review open items (01-REVIEW.md):
 - Plan 01 over-delivered: complete edit modal wiring (handleEditSave, populateEditForm, EquipmentPickerInline, all 8 form fields) was included in commit 242b4b3, making Plan 02 a verification-only step with no code changes
 - Edit modal PATCH uses SYS_ID_RE.test guard (CR-01 pattern) and X-UserToken: g_ck header (T-05-06 mitigation)
 - recipe field intentionally omitted from PATCH body per D-08 (historical artifact, not editable)
+
+### Decisions (Phase 5 — Plan 03)
+
+- Plan 01 over-delivered again: handleDelete function + delete confirmation modal + card trash icon entry point already delivered in commit 242b4b3; Plan 03 was verification-plus-minor-fix
+- Both delete entry points must call setDeleteError('') before opening confirmation modal to prevent stale error messages (fixed in commit 8d1ccf0)
+- Card trash icon calls setEditBrew(null) before setDeleteTargetSysId to prevent two modals stacking (RESEARCH.md Pitfall 6)
+- HTTP DELETE returns 204 No Content — res.json() is never called; only res.ok checked (T-05-11 mitigation)
 
 ### Pending Todos
 
