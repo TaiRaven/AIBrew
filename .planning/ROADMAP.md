@@ -136,9 +136,22 @@ Cross-cutting constraints:
   3. User can view average rating grouped by brew method, ranked highest to lowest
 **Plans**: 3 plans
 Plans:
+
+**Wave 1**
 - [ ] 06-01-PLAN.md — Scripted REST backend: analytics-api.now.ts + analytics-handler.ts (GlideRecord scan) + index.now.ts export + deploy
+
+**Wave 2** *(blocked on Wave 1 completion)*
 - [ ] 06-02-PLAN.md — AnalyticsView.tsx: fetch, TrendChart SVG polyline, HorizontalBarChart div rows, loading/error/placeholder states + wiring (app.tsx, TopNav.tsx, HomeView.tsx)
+
+**Wave 3** *(blocked on Wave 2 completion — human UAT checkpoint)*
 - [ ] 06-03-PLAN.md — Deploy + full UAT with non-admin aibrew_user account
+
+Cross-cutting constraints:
+- GlideRecord scan only — no GlideAggregate (D-09 mandate, all plans)
+- `X-UserToken: g_ck` guard on every fetch (all plans)
+- No third-party chart library — custom SVG/div only (D-01, Plan 02)
+- Unrated brews (rating = 0 or null) excluded from all aggregations (D-08, Plan 01)
+
 **UI hint**: yes
 
 ## Progress
