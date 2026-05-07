@@ -1,4 +1,4 @@
-import { GlideAggregate, gs } from '@servicenow/glide'
+import { GlideAggregate, GlideRecord, gs } from '@servicenow/glide'
 
 export function process(request: any, response: any) {
   const beanSysId = request.pathParams.bean_sys_id
@@ -17,13 +17,19 @@ export function process(request: any, response: any) {
       totalPurchased = parseInt(purchaseAgg.getAggregate('SUM', 'grams') || '0', 10)
     }
 
-    const brewAgg = new GlideAggregate('x_664529_aibrew_brew_log')
-    brewAgg.addAggregate('SUM', 'dose_weight_g')
-    brewAgg.addEncodedQuery('bean=' + beanSysId)
-    brewAgg.query()
-    const totalUsed = brewAgg.next()
-      ? parseFloat(brewAgg.getAggregate('SUM', 'dose_weight_g') || '0')
-      : 0
+    // GlideAggregate SUM does not reliably aggregate DecimalColumn values
+    // (returns 0 in this scope even when records exist with non-null doses).
+    // Diagnostic confirmed: probe via GlideRecord finds correct sum; aggregate returns 0.
+    // Workaround: scan via GlideRecord and sum in JS — at home-brew volumes (hundreds
+    // of records max) the cost is negligible.
+    const brewScan = new GlideRecord('x_664529_aibrew_brew_log')
+    brewScan.addQuery('bean', beanSysId)
+    brewScan.query()
+    let totalUsed = 0
+    while (brewScan.next()) {
+      const dose = brewScan.getValue('dose_weight_g')
+      if (dose) totalUsed += parseFloat(dose)
+    }
 
     response.setBody({
       remaining_g: totalPurchased - totalUsed,
