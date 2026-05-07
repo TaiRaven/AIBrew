@@ -435,6 +435,7 @@ export default function HistoryView() {
                   onClick={e => {
                     e.stopPropagation()
                     setEditBrew(null)
+                    setDeleteError('')
                     setDeleteTargetSysId(sysId)
                   }}
                   style={{
@@ -554,7 +555,7 @@ export default function HistoryView() {
           {/* Delete brew button — destructive, top of form */}
           <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 'var(--sp-md)' }}>
             <button
-              onClick={() => { if (editBrew) setDeleteTargetSysId(editBrew.sysId) }}
+              onClick={() => { if (editBrew) { setDeleteError(''); setDeleteTargetSysId(editBrew.sysId) } }}
               style={{
                 background: 'none',
                 border: 'none',
