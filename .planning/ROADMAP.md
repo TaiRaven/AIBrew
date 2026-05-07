@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Bean Catalog & Inventory** - Bean type records, purchase ledger, computed stock, low-stock badge (Complete 2026-05-01)
 - [x] **Phase 3: Recipe Presets** - Recipe table, preset list UI, save-from-brew action (Complete 2026-05-05)
 - [x] **Phase 4: Brew Log Core** - BrewLog table, brew logging form with timer, presets, ratio, rating, mobile layout (Complete 2026-05-06)
-- [ ] **Phase 5: Brew History & Management** - Brew history list, edit and delete on past brews
+- [x] **Phase 5: Brew History & Management** - Brew history list, edit and delete on past brews (Complete 2026-05-07)
 - [ ] **Phase 6: Analytics** - Scripted REST aggregations, rating trend, avg by bean, avg by method
 
 ## Phase Details
@@ -116,7 +116,7 @@ Plans:
 - [x] 05-03-PLAN.md — Delete flow (confirmation modal, hard DELETE, both entry points)
 
 **Wave 4** *(blocked on Wave 3 completion — human UAT checkpoint)*
-- [ ] 05-04-PLAN.md — Deploy + full UAT with non-admin aibrew_user account
+- [x] 05-04-PLAN.md — Deploy + full UAT with non-admin aibrew_user account
 
 Cross-cutting constraints:
 - SysId validated with `/^[0-9a-f]{32}$/i` before every PATCH/DELETE URL (all plans)
@@ -148,5 +148,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Bean Catalog & Inventory | 5/5 | Complete | 2026-05-01 |
 | 3. Recipe Presets | 4/4 | Complete | 2026-05-05 |
 | 4. Brew Log Core | 5/5 | Complete | 2026-05-06 |
-| 5. Brew History & Management | 3/4 | In progress | - |
+| 5. Brew History & Management | 4/4 | Complete | 2026-05-07 |
 | 6. Analytics | 0/TBD | Not started | - |

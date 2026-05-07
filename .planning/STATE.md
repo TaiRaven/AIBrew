@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-last_updated: "2026-05-07T08:47:25.863Z"
-last_activity: 2026-05-07
+status: active
+last_updated: "2026-05-07T12:55:00.000Z"
+last_activity: 2026-05-07 — Phase 5 complete; UAT approved with inventory bug fixed during UAT
 progress:
   total_phases: 6
-  completed_phases: 3
+  completed_phases: 5
   total_plans: 18
-  completed_plans: 22
-  percent: 100
+  completed_plans: 24
+  percent: 83
 ---
 
 # Project State
@@ -20,16 +20,28 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-28)
 
 **Core value:** Log a complete brew in under 60 seconds from the counter, so every session gets captured and nothing is lost.
-**Current focus:** Phase 4 — Brew Log Core (context gathered 2026-05-05)
+**Current focus:** Phase 6 — Analytics (next phase)
 
 ## Current Position
 
-Phase: 5 of 6 (Brew History & Management)
-Plan: 4 of 4 in current phase (Wave 4 next — UAT checkpoint)
-Status: Executing — Wave 3 (05-03) complete; Wave 4 (05-04) next
-Last activity: 2026-05-07 — Plan 05-03 complete; delete flow wired (handleDelete, confirmation modal, both entry points)
+Phase: 6 of 6 (Analytics — Not started)
+Plan: 0 of TBD
+Status: Phase 5 complete; ready to plan Phase 6
+Last activity: 2026-05-07 — Phase 5 UAT approved with non-admin account; inventory bug discovered and fixed during UAT
 
-Progress: [███████░░░] 67%
+Progress: [████████░░] 83%
+
+## Phase 5 — Complete (2026-05-07)
+
+All 4 plans executed and UAT approved with non-admin aibrew_user account.
+
+Lessons from Phase 5 UAT:
+
+- `GlideAggregate.addAggregate('SUM', 'dose_weight_g')` returns 0 on `DecimalColumn` fields in scoped apps even when records exist with non-null values — confirmed via diagnostic probe (probe found 6 records summing to 64g; aggregate returned 3 records summing to 0g). Workaround: `GlideRecord` scan + JS-side sum (acceptable at home-brew volumes; revisit if dataset grows large)
+- `GlideAggregate` works correctly on `IntegerColumn` (purchases use `grams` IntegerColumn and aggregate fine) — the bug appears specific to DecimalColumn
+- Cross-phase TODOs survive too long: Phase 2's `// Phase 4+: subtract brew depletions` comment went unaddressed through Phases 3 and 4 because nothing forced a review at phase boundaries
+- Diagnostic-style endpoint probing (returning intermediate counts in API response) is highly effective for debugging server-side aggregation issues without instance log access — keep this pattern in the toolkit
+- Human UAT with non-admin caught a bug that automated checks missed — validates the CLAUDE.md requirement that every phase ends with non-admin UAT
 
 ## Phase 3 — Complete (2026-05-05)
 
@@ -96,6 +108,12 @@ Code review open items (01-REVIEW.md):
 - Both delete entry points must call setDeleteError('') before opening confirmation modal to prevent stale error messages (fixed in commit 8d1ccf0)
 - Card trash icon calls setEditBrew(null) before setDeleteTargetSysId to prevent two modals stacking (RESEARCH.md Pitfall 6)
 - HTTP DELETE returns 204 No Content — res.json() is never called; only res.ok checked (T-05-11 mitigation)
+
+### Decisions (Phase 5 — Plan 04, UAT bug fixes)
+
+- Bean stock REST endpoint (src/server/bean-stock-handler.ts) MUST use GlideRecord scan + JS sum for brew dose totals; GlideAggregate.SUM is broken on DecimalColumn fields (commit b42911a). GlideAggregate is fine for IntegerColumn (purchases.grams).
+- Phase 2's `// Phase 4+:` commented TODO survived through Phases 3 and 4 unaddressed — phase boundary checklist should grep for forward-referencing TODOs in dependent files
+- Diagnostic-style API probing (returning intermediate counts in response body) is the canonical pattern for debugging server-side aggregation issues without instance log access
 
 ### Pending Todos
 
