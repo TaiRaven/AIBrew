@@ -105,10 +105,25 @@ Plans:
   3. User can delete a brew from the history list, with the inventory stock figure updating to reflect the removal
 **Plans**: 4 plans
 Plans:
+
+**Wave 1**
 - [ ] 05-01-PLAN.md — Navigation wiring + HistoryView scaffold (list, cards, load more, empty/error states)
+
+**Wave 2** *(blocked on Wave 1 completion)*
 - [ ] 05-02-PLAN.md — Edit modal (form fields pre-population, PATCH save, listKey refresh)
+
+**Wave 3** *(blocked on Wave 2 completion)*
 - [ ] 05-03-PLAN.md — Delete flow (confirmation modal, hard DELETE, both entry points)
+
+**Wave 4** *(blocked on Wave 3 completion — human UAT checkpoint)*
 - [ ] 05-04-PLAN.md — Deploy + full UAT with non-admin aibrew_user account
+
+Cross-cutting constraints:
+- SysId validated with `/^[0-9a-f]{32}$/i` before every PATCH/DELETE URL (all plans)
+- `g_ck` guard on every mutating fetch (all plans)
+- `sysparm_display_value=all` on every Table API fetch (all plans)
+- Do NOT call `res.json()` on DELETE 204 No Content response (Plan 03)
+
 **UI hint**: yes
 
 ### Phase 6: Analytics
