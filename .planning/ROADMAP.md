@@ -134,7 +134,11 @@ Cross-cutting constraints:
   1. User can view a rating trend chart showing score by brew date
   2. User can view average rating grouped by bean type, ranked highest to lowest
   3. User can view average rating grouped by brew method, ranked highest to lowest
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 06-01-PLAN.md — Scripted REST backend: analytics-api.now.ts + analytics-handler.ts (GlideRecord scan) + index.now.ts export + deploy
+- [ ] 06-02-PLAN.md — AnalyticsView.tsx: fetch, TrendChart SVG polyline, HorizontalBarChart div rows, loading/error/placeholder states + wiring (app.tsx, TopNav.tsx, HomeView.tsx)
+- [ ] 06-03-PLAN.md — Deploy + full UAT with non-admin aibrew_user account
 **UI hint**: yes
 
 ## Progress
@@ -149,4 +153,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. Recipe Presets | 4/4 | Complete | 2026-05-05 |
 | 4. Brew Log Core | 5/5 | Complete | 2026-05-06 |
 | 5. Brew History & Management | 4/4 | Complete | 2026-05-07 |
-| 6. Analytics | 0/TBD | Not started | - |
+| 6. Analytics | 0/3 | In progress | - |
