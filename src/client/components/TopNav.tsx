@@ -6,7 +6,7 @@ const TAB_ITEMS = [
   { id: 'home',      label: 'Home',      disabled: false },
   { id: 'brew',      label: 'Brew',      disabled: false },
   { id: 'catalog',   label: 'Catalog',   disabled: false },
-  { id: 'history',   label: 'History',   disabled: true  },
+  { id: 'history',   label: 'History',   disabled: false },
   { id: 'analytics', label: 'Analytics', disabled: true  },
 ]
 

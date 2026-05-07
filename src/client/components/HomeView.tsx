@@ -17,7 +17,7 @@ const TILES: Tile[] = [
   { id: 'beans',     label: 'Beans',     description: '',                    active: false },
   { id: 'brew',      label: 'Brew Log',  description: 'Log your session',    active: true,  view: 'brew' },
   { id: 'recipes',   label: 'Recipes',   description: '',                    active: false },
-  { id: 'history',   label: 'History',   description: '',                    active: false },
+  { id: 'history',   label: 'History',   description: 'Review past brews',   active: true,  view: 'history' },
   { id: 'analytics', label: 'Analytics', description: '',                    active: false },
 ]
 

@@ -3,6 +3,7 @@ import TopNav from './components/TopNav'
 import HomeView from './components/HomeView'
 import CatalogView from './components/CatalogView'
 import BrewView from './components/BrewView'
+import HistoryView from './components/HistoryView'
 import { getViewParams, navigateToView } from './utils/navigate'
 
 function getActiveTab(params: URLSearchParams): string {
@@ -69,6 +70,7 @@ export default function App() {
       case 'brew':
         return <BrewView params={params} />
       case 'history':
+        return <HistoryView />
       case 'analytics':
         return <DisabledView view={view} />
       default:
