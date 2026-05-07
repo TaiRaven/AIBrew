@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(npx @servicenow/sdk explain --list --format=raw)",
+      "Bash(npx @servicenow/sdk explain table-guide --peek --format=raw)",
+      "Bash(npx @servicenow/sdk explain ui-page-guide --peek --format=raw)",
+      "Bash(npx @servicenow/sdk explain developing-apps-guide --format=raw)",
+      "Bash(npx @servicenow/sdk explain ui-page-guide --format=raw)",
+      "Bash(npx @servicenow/sdk explain table-guide --format=raw)",
+      "Bash(git -C \"C:/Users/William.Wood/AIBrew\" add .planning/research/)",
+      "Bash(git -C \"C:/Users/William.Wood/AIBrew\" commit -m \"docs: add domain research\")",
+      "Bash(node *)",
+      "Bash(npm install *)",
+      "Bash(npx *)",
+      "Skill(gsd-execute-phase)",
+      "Skill(gsd-code-review)",
+      "Skill(gsd-code-review-fix)",
+      "Skill(gsd-plan-phase)",
+      "Bash(cp .planning/STATE.md /tmp/state_backup.md)",
+      "Bash(cp .planning/ROADMAP.md /tmp/roadmap_backup.md)",
+      "Bash(git merge *)",
+      "Bash(git checkout *)",
+      "Bash(ls src/fluent/scripted-rest/)",
+      "Bash(ls src/fluent/script-includes/)",
+      "Bash(git worktree *)",
+      "Bash(git branch *)",
+      "Bash(ls .planning/phases/02-bean-catalog-inventory/*SUMMARY*)",
+      "Skill(gsd-discuss-phase)",
+      "Bash(gsd-sdk query *)",
+      "Bash(cp /tmp/state_backup.md .planning/STATE.md)",
+      "Bash(cp /tmp/roadmap_backup.md .planning/ROADMAP.md)",
+      "Bash(git reset *)",
+      "Bash(cp /tmp/state_bk.md .planning/STATE.md)",
+      "Bash(cp /tmp/roadmap_bk.md .planning/ROADMAP.md)",
+      "Bash(git stash *)",
+      "Bash(unzip -l target/aibrew_0_0_1.zip)",
+      "Bash(unzip -p target/aibrew_0_0_1.zip \"/update/sys_script_include_1da4444f8b304ea099f060367b885863.xml\")",
+      "Bash(unzip *)"
+    ]
+  }
+}

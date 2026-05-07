@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BrewAI · Coffee Brewing Wireframes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&family=Patrick+Hand&family=Shadows+Into+Light&family=Architects+Daughter&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --ink: #1d1a17;
+    --ink-2: #3a3530;
+    --ink-3: #6b645d;
+    --ink-4: #a59d94;
+    --paper: #fbf8f2;
+    --paper-2: #f3ede1;
+    --rule: #1d1a17;
+    --accent: #c2410c;     /* burnt espresso */
+    --accent-2: #eab308;   /* highlighter */
+    --accent-3: #166534;   /* annotation green */
+    --note: #fef3c7;
+    --stroke: 2px;
+    --roughness: 0.6px;
+    --hand-body: "Kalam", "Patrick Hand", sans-serif;
+    --hand-disp: "Caveat", "Shadows Into Light", cursive;
+    --hand-mono: "Architects Daughter", monospace;
+  }
+
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: var(--hand-body); }
+  * { box-sizing: border-box; }
+
+  /* ——— Wireframe primitives ——— */
+  .wf {
+    font-family: var(--hand-body);
+    color: var(--ink);
+    background: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+  /* Paper texture */
+  .wf::before {
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(rgba(0,0,0,.035) 1px, transparent 1px),
+      radial-gradient(rgba(0,0,0,.02) 1px, transparent 1px);
+    background-size: 3px 3px, 7px 7px;
+    background-position: 0 0, 1px 2px;
+    pointer-events:none;
+    mix-blend-mode:multiply;
+    opacity:.8;
+  }
+
+  /* Hand-drawn box */
+  .box {
+    border: var(--stroke) solid var(--ink);
+    border-radius: 6px 4px 7px 3px / 4px 7px 3px 6px;
+    background: var(--paper);
+    position: relative;
+  }
+  .box.tilt-l { transform: rotate(-0.25deg); }
+  .box.tilt-r { transform: rotate(0.25deg); }
+  .box.dashed { border-style: dashed; }
+  .box.dotted { border-style: dotted; }
+  .box.thick { border-width: 2.5px; }
+  .box.fill-note { background: var(--note); }
+  .box.fill-ink { background: var(--ink); color: var(--paper); }
+  .box.fill-soft { background: var(--paper-2); }
+
+  .h-sep { height: var(--stroke); background: var(--ink); border: 0; }
+  .h-sep.dashed { background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 11px); height: 2px; }
+
+  .wf h1, .wf h2, .wf h3, .wf h4 { font-family: var(--hand-disp); margin: 0; font-weight: 700; letter-spacing: .3px; }
+  .wf h1 { font-size: 38px; line-height: 1; }
+  .wf h2 { font-size: 28px; line-height: 1.05; }
+  .wf h3 { font-size: 22px; }
+  .wf h4 { font-size: 18px; }
+
+  .label { font-family: var(--hand-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-2); }
+  .kbd { font-family: var(--hand-mono); font-size: 11px; border: 1.5px solid var(--ink); padding: 1px 6px; border-radius: 4px; background: var(--paper); }
+
+  /* "Sketchy" underline */
+  .squiggle {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 6'><path d='M0 3 Q 10 0 20 3 T 40 3 T 60 3 T 80 3' stroke='%23c2410c' stroke-width='2' fill='none' stroke-linecap='round'/></svg>");
+    background-repeat: repeat-x;
+    background-position: 0 100%;
+    background-size: 80px 6px;
+    padding-bottom: 6px;
+  }
+
+  /* Scribbled placeholder lines */
+  .scribble-lines {
+    --g: 10px;
+    background-image:
+      linear-gradient(var(--ink) 1.6px, transparent 1.6px);
+    background-size: 100% var(--g);
+    background-position: 0 0;
+  }
+  .scribble-lines.short { mask-image: linear-gradient(to right, #000 0 85%, transparent 100%); -webkit-mask-image: linear-gradient(to right, #000 0 85%, transparent 100%); }
+
+  /* image placeholder with X */
+  .img-x {
+    border: var(--stroke) solid var(--ink);
+    border-radius: 4px;
+    background:
+      linear-gradient(to top right, transparent calc(50% - 1px), var(--ink) 50%, transparent calc(50% + 1px)),
+      linear-gradient(to top left, transparent calc(50% - 1px), var(--ink) 50%, transparent calc(50% + 1px)),
+      var(--paper-2);
+    position:relative;
+  }
+
+  /* arrow/annotation */
+  .annot {
+    font-family: var(--hand-disp);
+    color: var(--accent);
+    font-size: 20px;
+    line-height: 1;
+    transform: rotate(-4deg);
+    position: absolute;
+    white-space: nowrap;
+    z-index: 3;
+  }
+  .annot.green { color: var(--accent-3); }
+  .annot.ink { color: var(--ink); }
+
+  /* Arrows (SVG) */
+  .arrow { position:absolute; pointer-events:none; z-index:2; }
+
+  /* Post-it note */
+  .note {
+    background: var(--note);
+    padding: 10px 12px;
+    transform: rotate(-1.5deg);
+    box-shadow: 2px 3px 0 rgba(0,0,0,.08);
+    font-family: var(--hand-body);
+    font-size: 13px;
+    color: var(--ink-2);
+    border-radius: 2px;
+    position: relative;
+  }
+  .note::after {
+    content:""; position:absolute; left:50%; top:-6px; width:40px; height:10px;
+    background: rgba(120,90,40,.2); transform: translateX(-50%) rotate(-3deg);
+    border-radius:1px;
+  }
+
+  /* Buttons (sketched) */
+  .btn {
+    display:inline-flex; align-items:center; gap:6px;
+    border: var(--stroke) solid var(--ink);
+    border-radius: 20px 24px 22px 26px / 22px 20px 26px 22px;
+    padding: 6px 14px;
+    background: var(--paper);
+    font-family: var(--hand-body);
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .btn.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn.sm { font-size: 12px; padding: 3px 10px; }
+
+  /* Bar chart */
+  .bars { display:flex; align-items:end; gap:6px; height:100%; }
+  .bar { flex:1; background: repeating-linear-gradient(45deg, var(--ink) 0 2px, transparent 2px 5px); border: var(--stroke) solid var(--ink); border-radius: 2px 3px 1px 2px; }
+  .bar.accent { background: repeating-linear-gradient(45deg, var(--accent) 0 2px, transparent 2px 5px); border-color: var(--accent); }
+
+  /* Line chart placeholder */
+  .line-chart { position:relative; }
+  .line-chart svg { width:100%; height:100%; display:block; }
+  .line-chart path { fill:none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .line-chart path.accent { stroke: var(--accent); }
+  .line-chart circle { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+
+  /* Star rating */
+  .stars { display:inline-flex; gap:2px; font-family: var(--hand-disp); font-size:18px; color: var(--ink); }
+  .stars .empty { color: var(--ink-4); }
+
+  /* Progress (bean bag fill) */
+  .progress {
+    height: 10px; border: 1.8px solid var(--ink); border-radius: 20px; position:relative; overflow:hidden;
+    background: repeating-linear-gradient(45deg, transparent 0 6px, rgba(0,0,0,.04) 6px 7px);
+  }
+  .progress > i { position:absolute; inset:0 auto 0 0; background: var(--ink); border-right: 1.8px solid var(--ink); }
+  .progress.accent > i { background: var(--accent); border-color: var(--accent); }
+
+  /* Chips */
+  .chip {
+    display:inline-flex; align-items:center; gap:5px;
+    border: 1.6px solid var(--ink);
+    border-radius: 16px 20px 18px 22px / 20px 16px 22px 18px;
+    padding: 2px 9px;
+    font-size: 11px;
+    font-family: var(--hand-body);
+    background: var(--paper);
+    white-space:nowrap;
+  }
+  .chip.sel { background: var(--ink); color: var(--paper); }
+  .chip.accent { background: var(--accent); color:#fff; border-color: var(--accent); }
+
+  /* input row */
+  .input {
+    border: 1.8px solid var(--ink);
+    border-radius: 6px 4px 7px 5px;
+    padding: 6px 10px;
+    background: var(--paper);
+    font-family: var(--hand-body);
+    font-size: 13px;
+    min-height: 28px;
+    display:flex; align-items:center; gap:6px;
+  }
+
+  /* density variants */
+  .wf[data-density="compact"] .row { gap: 8px !important; }
+  .wf[data-density="compact"] .pad { padding: 10px !important; }
+  .wf[data-density="roomy"] .row { gap: 20px !important; }
+  .wf[data-density="roomy"] .pad { padding: 22px !important; }
+
+  /* Line weight tweak */
+  .wf[data-weight="thin"] { --stroke: 1.4px; }
+  .wf[data-weight="thick"] { --stroke: 2.8px; }
+
+  /* Annotations toggle */
+  body[data-annot="off"] .annot,
+  body[data-annot="off"] .arrow,
+  body[data-annot="off"] .note { display:none !important; }
+
+  /* Accent swap */
+  body[data-accent="orange"] { --accent: #c2410c; }
+  body[data-accent="green"] { --accent: #166534; }
+  body[data-accent="blue"] { --accent: #1d4ed8; }
+  body[data-accent="ink"] { --accent: #1d1a17; }
+
+  /* ——— Tweaks panel ——— */
+  .tweaks {
+    position: fixed; bottom: 18px; right: 18px; z-index: 100;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 10px 14px 12px 16px;
+    padding: 14px 14px 12px;
+    font-family: var(--hand-body);
+    width: 260px;
+    box-shadow: 3px 4px 0 rgba(0,0,0,.12);
+    display: none;
+  }
+  .tweaks.on { display:block; }
+  .tweaks h4 { font-family: var(--hand-disp); font-size: 22px; margin: 0 0 6px; }
+  .tweaks .group { margin: 10px 0 4px; }
+  .tweaks .group > .label { display:block; margin-bottom:5px; }
+  .tweaks .opts { display:flex; flex-wrap:wrap; gap:5px; }
+  .tweaks .opt {
+    border: 1.6px solid var(--ink);
+    border-radius: 14px 18px 16px 20px;
+    padding: 2px 9px;
+    font-size: 12px;
+    cursor: pointer;
+    background: var(--paper);
+  }
+  .tweaks .opt.sel { background: var(--ink); color: var(--paper); }
+  .tweaks .swatch { width:20px; height:20px; border: 1.8px solid var(--ink); border-radius:50%; cursor:pointer; }
+  .tweaks .swatch.sel { box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--ink); }
+
+  /* helpers */
+  .row { display:flex; }
+  .col { display:flex; flex-direction:column; }
+  .pad { padding: 16px; }
+  .g8 { gap: 8px; } .g12 { gap: 12px; } .g16 { gap: 16px; } .g20 { gap: 20px; } .g24 { gap: 24px; }
+  .f1 { flex: 1; } .f2 { flex: 2; } .f3 { flex: 3; }
+  .mt4{margin-top:4px} .mt8{margin-top:8px} .mt12{margin-top:12px} .mt16{margin-top:16px} .mt24{margin-top:24px}
+  .mb4{margin-bottom:4px} .mb8{margin-bottom:8px} .mb12{margin-bottom:12px} .mb16{margin-bottom:16px}
+  .ai-c{align-items:center}.jc-sb{justify-content:space-between}.jc-c{justify-content:center}.jc-e{justify-content:flex-end}
+  .ta-c{text-align:center}.ta-r{text-align:right}
+  .tall{height:100%} .wide{width:100%}
+  .muted { color: var(--ink-3); }
+  .tiny { font-size: 11px; }
+  .small { font-size: 12px; }
+  .big { font-size: 30px; font-family: var(--hand-disp); line-height: 1; }
+  .huge { font-size: 46px; font-family: var(--hand-disp); line-height: .95; }
+
+  /* Sketched icon (mug) */
+  .mug {
+    width: 22px; height: 22px; display:inline-block; vertical-align:middle;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d1a17' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 7c0-1 0-1 1-1h11c1 0 1 0 1 1v8c0 3-2 5-5 5H7c-2 0-4-2-4-4V7Z'/><path d='M17 9c2 0 3 1 3 3s-1 3-3 3'/><path d='M6 3c0 1 1 1 1 2s-1 1-1 2'/><path d='M10 3c0 1 1 1 1 2s-1 1-1 2'/></svg>") center/contain no-repeat;
+  }
+</style>
+</head>
+<body data-accent="orange" data-annot="on">
+
+<!-- ——— LOAD REACT + BABEL ——— -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<div id="root"></div>
+
+<!-- Tweaks panel (outside canvas) -->
+<div class="tweaks" id="tweaks">
+  <h4>Tweaks</h4>
+  <div class="tiny muted" style="margin-top:-4px">Adjust the wireframe feel</div>
+
+  <div class="group">
+    <span class="label">Line weight</span>
+    <div class="opts" data-tweak="weight">
+      <span class="opt" data-v="thin">thin</span>
+      <span class="opt sel" data-v="normal">normal</span>
+      <span class="opt" data-v="thick">thick</span>
+    </div>
+  </div>
+
+  <div class="group">
+    <span class="label">Annotations</span>
+    <div class="opts" data-tweak="annot">
+      <span class="opt sel" data-v="on">show</span>
+      <span class="opt" data-v="off">hide</span>
+    </div>
+  </div>
+
+  <div class="group">
+    <span class="label">Accent color</span>
+    <div class="opts" data-tweak="accent">
+      <span class="swatch sel" data-v="orange" style="background:#c2410c"></span>
+      <span class="swatch" data-v="green" style="background:#166534"></span>
+      <span class="swatch" data-v="blue" style="background:#1d4ed8"></span>
+      <span class="swatch" data-v="ink" style="background:#1d1a17"></span>
+    </div>
+  </div>
+
+  <div class="group">
+    <span class="label">Density</span>
+    <div class="opts" data-tweak="density">
+      <span class="opt" data-v="compact">compact</span>
+      <span class="opt sel" data-v="normal">normal</span>
+      <span class="opt" data-v="roomy">roomy</span>
+    </div>
+  </div>
+
+  <div class="tiny muted mt12" style="border-top:1.5px dashed var(--ink-4); padding-top:8px">
+    Applies to all wireframes on the canvas.
+  </div>
+</div>
+
+<script type="text/babel" src="wireframes.jsx"></script>
+<script type="text/babel" src="variations.jsx"></script>
+<script type="text/babel" src="variations2.jsx"></script>
+<script type="text/babel" src="subpages.jsx"></script>
+<script type="text/babel" src="subpages2.jsx"></script>
+<script type="text/babel" src="mobile.jsx"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+
+<!-- Tweak wiring + edit-mode bridge -->
+<script>
+  (function(){
+    const TWEAKS = /*EDITMODE-BEGIN*/{
+      "weight": "thick",
+      "annot": "on",
+      "accent": "blue",
+      "density": "compact"
+    }/*EDITMODE-END*/;
+
+    function apply(key, val) {
+      if (key === 'accent' || key === 'annot') {
+        document.body.setAttribute('data-'+key, val);
+      } else {
+        // apply to every .wf (density + weight)
+        document.querySelectorAll('.wf').forEach(el => el.setAttribute('data-'+key, val));
+      }
+      // update opt selection UI
+      document.querySelectorAll('[data-tweak="'+key+'"] [data-v]').forEach(n=>{
+        n.classList.toggle('sel', n.dataset.v === val);
+      });
+    }
+
+    // Initial apply whenever new .wf are added (observer)
+    function applyAll(){ Object.entries(TWEAKS).forEach(([k,v])=>apply(k,v)); }
+    const mo = new MutationObserver(applyAll);
+    mo.observe(document.body, {childList:true, subtree:true});
+    applyAll();
+
+    // Click handlers
+    document.getElementById('tweaks').addEventListener('click', e => {
+      const t = e.target.closest('[data-v]');
+      if (!t) return;
+      const group = t.closest('[data-tweak]');
+      const key = group.dataset.tweak;
+      const val = t.dataset.v;
+      TWEAKS[key] = val;
+      apply(key, val);
+      try {
+        window.parent.postMessage({type:'__edit_mode_set_keys', edits:{[key]:val}},'*');
+      } catch(_){}
+    });
+
+    // Edit-mode bridge
+    window.addEventListener('message', (e)=>{
+      const d = e.data || {};
+      if (d.type === '__activate_edit_mode') document.getElementById('tweaks').classList.add('on');
+      if (d.type === '__deactivate_edit_mode') document.getElementById('tweaks').classList.remove('on');
+    });
+    try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(_){}
+  })();
+</script>
+</body>
+</html>
