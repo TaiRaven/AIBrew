@@ -103,7 +103,12 @@ Plans:
   1. User can view a reverse-chronological list of all logged brews
   2. User can tap a brew in the history list and edit any of its fields
   3. User can delete a brew from the history list, with the inventory stock figure updating to reflect the removal
-**Plans**: TBD
+**Plans**: 4 plans
+Plans:
+- [ ] 05-01-PLAN.md — Navigation wiring + HistoryView scaffold (list, cards, load more, empty/error states)
+- [ ] 05-02-PLAN.md — Edit modal (form fields pre-population, PATCH save, listKey refresh)
+- [ ] 05-03-PLAN.md — Delete flow (confirmation modal, hard DELETE, both entry points)
+- [ ] 05-04-PLAN.md — Deploy + full UAT with non-admin aibrew_user account
 **UI hint**: yes
 
 ### Phase 6: Analytics
@@ -128,5 +133,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Bean Catalog & Inventory | 5/5 | Complete | 2026-05-01 |
 | 3. Recipe Presets | 4/4 | Complete | 2026-05-05 |
 | 4. Brew Log Core | 5/5 | Complete | 2026-05-06 |
-| 5. Brew History & Management | 0/TBD | Not started | - |
+| 5. Brew History & Management | 0/4 | Not started | - |
 | 6. Analytics | 0/TBD | Not started | - |
