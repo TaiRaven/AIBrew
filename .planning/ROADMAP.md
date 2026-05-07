@@ -107,7 +107,7 @@ Plans:
 Plans:
 
 **Wave 1**
-- [ ] 05-01-PLAN.md — Navigation wiring + HistoryView scaffold (list, cards, load more, empty/error states)
+- [x] 05-01-PLAN.md — Navigation wiring + HistoryView scaffold (list, cards, load more, empty/error states)
 
 **Wave 2** *(blocked on Wave 1 completion)*
 - [ ] 05-02-PLAN.md — Edit modal (form fields pre-population, PATCH save, listKey refresh)
@@ -148,5 +148,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Bean Catalog & Inventory | 5/5 | Complete | 2026-05-01 |
 | 3. Recipe Presets | 4/4 | Complete | 2026-05-05 |
 | 4. Brew Log Core | 5/5 | Complete | 2026-05-06 |
-| 5. Brew History & Management | 0/4 | Not started | - |
+| 5. Brew History & Management | 1/4 | In progress | - |
 | 6. Analytics | 0/TBD | Not started | - |

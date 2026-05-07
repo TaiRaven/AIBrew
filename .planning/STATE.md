@@ -4,12 +4,12 @@ milestone: v1.0
 milestone_name: milestone
 status: active
 last_updated: "2026-05-07T00:00:00.000Z"
-last_activity: 2026-05-07 — Phase 5 planning complete; 4 plans created and verified
+last_activity: 2026-05-07 — Plan 05-01 complete; HistoryView built and History tab enabled
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 18
-  completed_plans: 20
+  completed_plans: 21
   percent: 67
 ---
 
@@ -25,11 +25,11 @@ See: .planning/PROJECT.md (updated 2026-04-28)
 ## Current Position
 
 Phase: 5 of 6 (Brew History & Management)
-Plan: 0 of 4 in current phase (planning complete)
-Status: Ready to execute — 4 plans created, verification passed
-Last activity: 2026-05-07 — Phase 5 planning complete; 4 plans created and verified
+Plan: 1 of 4 in current phase (Wave 2 next)
+Status: Executing — Wave 1 (05-01) complete; Wave 2 (05-02) next
+Last activity: 2026-05-07 — Plan 05-01 complete; HistoryView with paginated list, cards, edit modal, delete confirm committed
 
-Progress: [█████░░░░░] 50%
+Progress: [██████░░░░] 58%
 
 ## Phase 3 — Complete (2026-05-05)
 
@@ -76,6 +76,13 @@ Code review open items (01-REVIEW.md):
 - RecipeSection.tsx: equipment field omitted from list fetch per D-08 — detail view only; card shows name/method/ratio
 - RecipeSection.tsx: isMobile breakpoint ≤400px; bottom-sheet modal on mobile, centered overlay on desktop
 - RecipeSection.tsx: sys_id field may be object or scalar — handled with `typeof r.sys_id === 'object' ? value(r.sys_id) : r.sys_id`
+
+### Decisions (Phase 5 — Plan 01)
+
+- History list uses sysparm_offset pagination (first paginated list in codebase); append pattern: setBrews(prev => [...prev, ...results])
+- Hard DELETE to Table API introduced — 204 No Content; never call res.json() on DELETE response
+- HistoryView contains both edit modal and delete confirmation modal in one file (Plans 2 & 3 add full wiring)
+- History tab enabled in TopNav and HomeView tile made active (D-14/D-15/D-16)
 
 ### Pending Todos
 
